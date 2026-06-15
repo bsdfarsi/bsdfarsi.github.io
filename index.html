@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بی‌اس‌دی فارسی | جامعه کاربران BSD</title>
+    <!-- Importing Vazirmatn font for clean Persian typography -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <style>
+        :root {
+            --primary-color: #cc2229; /* A strong red, nodding to the daemon logo */
+            --bg-color: #f4f5f7;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+        }
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 3rem 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        header p {
+            margin: 10px 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .post {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            margin-bottom: 30px;
+        }
+        .post-date {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .post-title {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 2rem;
+            line-height: 1.4;
+        }
+        .post-content h3 {
+            margin-top: 35px;
+            color: #1a252f;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 8px;
+        }
+        .post-content p {
+            text-align: justify;
+            font-size: 1.05rem;
+        }
+        .post-content ul {
+            font-size: 1.05rem;
+            padding-right: 20px;
+        }
+        .post-content li {
+            margin-bottom: 10px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        a:hover {
+            color: #a01a20;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>بی‌اس‌دی فارسی (BSD Farsi)</h1>
+    <p>جامعه کاربران و علاقه‌مندان به سیستم‌عامل‌های خانواده BSD در ایران</p>
+</header>
+
+<div class="container">
+    <article class="post">
+        <span class="post-date">نخستین پست • منتشر شده در گیت‌هاب پیجز</span>
+        <h2 class="post-title">بی‌اس‌دی (BSD) چیست و چرا اهمیت دارد؟</h2>
+        
+        <div class="post-content">
+            <p>سیستم‌عامل‌های مبتنی بر <strong>بی‌اس‌دی (Berkeley Software Distribution)</strong> از پایدارترین، امن‌ترین و قدرتمندترین سیستم‌عامل‌های موجود در دنیای فناوری هستند. این سیستم‌عامل‌ها، که ریشه در نسخه یونیکس دانشگاه برکلی در دهه ۱۹۷۰ میلادی دارند، امروزه به دلیل معماری یکپارچه، کد منبع تمیز و مستندات بی‌نظیرشان در سطح جهان شناخته می‌شوند.</p>
+            
+            <h3>یکپارچگی در برابر پراکندگی</h3>
+            <p>یکی از مهم‌ترین تفاوت‌های خانواده BSD با سیستم‌عامل‌های گنو/لینوکس در نحوه توسعه آن‌هاست. در لینوکس، هسته (Kernel) و ابزارهای کاربری (Userland) توسط گروه‌ها و پروژه‌های مجزا توسعه می‌یابند و سپس توسط توزیع‌کنندگان مختلف سرهم می‌شوند. اما در بی‌اس‌دی، کل سیستم‌عامل (شامل هسته و ابزارهای پایه) به صورت یکپارچه و توسط یک تیم واحد توسعه و نگهداری می‌شود. این رویکرد موجب هماهنگی، پایداری فوق‌العاده و قابل‌پیش‌بینی بودن سیستم می‌گردد.</p>
+
+            <h3>اعضای اصلی خانواده بی‌اس‌دی</h3>
+            <ul>
+                <li><strong>FreeBSD:</strong> محبوب‌ترین نسخه که تمرکز ویژه‌ای بر کارایی بالا، شبکه‌های سنگین و پایداری در سرورها دارد. بسیاری از زیرساخت‌های حیاتی اینترنت بر پایه این سیستم‌عامل بنا شده‌اند.</li>
+                <li><strong>OpenBSD:</strong> سیستمی با تمرکز وسواس‌گونه بر امنیت سایبری و پیشگیری از نفوذ. این پروژه استانداردهای امنیتی جدیدی (مانند OpenSSH) را در دنیای نرم‌افزار تعریف کرده است.</li>
+                <li><strong>NetBSD:</strong> پروژه‌ای با معماری بسیار تمیز که روی طیف بی‌نظیری از سخت‌افزارها و معماری‌های مختلف قابل اجراست.</li>
+            </ul>
+
+            <h3>رسالت ما در بی‌اس‌دی فارسی</h3>
+            <p>هدف ما در <strong>بی‌اس‌دی فارسی (bsdfarsi)</strong>، ترویج فرهنگ استفاده از این سیستم‌عامل‌های قدرتمند، تولید محتوای آموزشی باکیفیت و ایجاد یک جامعه پویا و حرفه‌ای برای متخصصان و علاقه‌مندان ایرانی است. ما در ابتدای یک مسیر طولانی هستیم و از همراهی شما در این مسیر استقبال می‌کنیم. به ما بپیوندید تا با هم در اعماق دنیای بی‌اس‌دی کاوش کنیم.</p>
+        </div>
+    </article>
+</div>
+
+<footer>
+    <p>قدرت گرفته از <a href="https://pages.github.com/" target="_blank">GitHub Pages</a> • کد منبع در <a href="https://github.com/bsdfarsi">گیتهاب بی‌اس‌دی فارسی</a> موجود است.</p>
+</footer>
+
+</body>
+</html>
