@@ -1,9 +1,15 @@
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/Vazirmatn-font-face.css');
+
 :root {
     --primary-color: #cc2229;
-    --bg-color: #f4f5f7;
+    --primary-hover: #a01a20;
+    --bg-color: #f8f9fa;
     --text-color: #2c3e50;
+    --light-text: #7f8c8d;
     --card-bg: #ffffff;
+    --border-color: #e2e8f0;
 }
+
 body {
     font-family: 'Vazirmatn', sans-serif;
     background-color: var(--bg-color);
@@ -11,78 +17,168 @@ body {
     line-height: 1.8;
     margin: 0;
     padding: 0;
+    -webkit-font-smoothing: antialiased;
 }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 header {
-    background-color: var(--primary-color);
-    color: white;
-    text-align: center;
-    padding: 3rem 1rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background-color: var(--card-bg);
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 2px solid var(--primary-color);
 }
-header h1 {
+
+.nav-container {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-section img {
+    height: 50px;
+    width: auto;
+    
+}
+
+.logo-section h1 {
     margin: 0;
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     font-weight: 700;
+    color: var(--text-color);
 }
-header p {
-    margin: 10px 0 0;
-    font-size: 1.1rem;
-    opacity: 0.9;
+
+.nav-links {
+    display: flex;
+    gap: 20px;
 }
+
+.nav-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+
 .container {
-    max-width: 800px;
+    max-width: 850px;
     margin: 40px auto;
     padding: 0 20px;
 }
-.post {
+
+.card {
     background-color: var(--card-bg);
     border-radius: 12px;
-    padding: 40px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-    margin-bottom: 30px;
+    padding: 35px 40px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02), 0 10px 15px rgba(0,0,0,0.03);
+    margin-bottom: 35px;
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0; /* Starts hidden for animation */
 }
-.post-date {
-    color: #888;
+
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.3s; }
+.card:nth-child(3) { animation-delay: 0.5s; }
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.05), 0 15px 25px rgba(0,0,0,0.04);
+}
+
+.post-meta {
+    color: var(--light-text);
     font-size: 0.9rem;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     display: block;
 }
+
 .post-title {
     color: var(--primary-color);
     margin-top: 0;
-    font-size: 2rem;
+    font-size: 1.8rem;
     line-height: 1.4;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
 }
-.post-content h3 {
-    margin-top: 35px;
+
+.content h3 {
     color: #1a252f;
-    border-bottom: 2px solid #edf2f7;
-    padding-bottom: 8px;
+    margin-top: 30px;
 }
-.post-content p {
+
+.content p {
     text-align: justify;
     font-size: 1.05rem;
 }
-.post-content ul {
+
+.content ul {
     font-size: 1.05rem;
-    padding-right: 20px;
+    padding-right: 25px;
 }
-.post-content li {
-    margin-bottom: 10px;
+
+.content li {
+    margin-bottom: 8px;
 }
+
+.rules-card {
+    border-right: 4px solid var(--primary-color);
+}
+
 footer {
     text-align: center;
-    padding: 20px;
-    color: #7f8c8d;
+    padding: 30px 20px;
+    color: var(--light-text);
     font-size: 0.9rem;
-    margin-top: 40px;
+    border-top: 1px solid var(--border-color);
+    margin-top: 50px;
+    background-color: var(--card-bg);
 }
-a {
-    color: var(--primary-color);
+
+footer a {
+    color: var(--text-color);
     text-decoration: none;
+    font-weight: bold;
+    margin: 0 10px;
     transition: color 0.2s ease;
 }
-a:hover {
-    color: #a01a20;
-    text-decoration: underline;
+
+footer a:hover {
+    color: var(--primary-color);
+}
+
+@media (max-width: 600px) {
+    .nav-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .card {
+        padding: 25px 20px;
+    }
 }
