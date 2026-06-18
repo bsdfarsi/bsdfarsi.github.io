@@ -1,14 +1,16 @@
-@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/Vazirmatn-font-face.css');
+html {
+    scroll-behavior: smooth;
+}
 
 :root {
-    --bg-color: #0d1117;        
-    --sidebar-bg: #161b22;   
-    --card-bg: #21262d;      
-    --primary-color: #cc2229; 
-    --primary-hover: #f85149;  
-    --text-color: #c9d1d9;   
-    --text-strong: #f0f6fc;   
-    --border-color: #30363d;  
+    --bg-color: #0d1117;         
+    --sidebar-bg: #161b22;     
+    --card-bg: #21262d;        
+    --primary-color: #cc2229;   
+    --primary-hover: #f85149;   
+    --text-color: #c9d1d9;      
+    --text-strong: #f0f6fc;     
+    --border-color: #30363d;    
     --sidebar-width: 280px;
 }
 
@@ -94,12 +96,6 @@ body {
     padding-right: 20px;
 }
 
-.sidebar-menu a:focus,
-.sidebar-menu a:active {
-    background-color: var(--primary-color);
-    color: var(--text-strong);
-}
-
 .sidebar-footer {
     margin-top: auto;
     padding-top: 20px;
@@ -121,7 +117,6 @@ body {
 .main-content {
     flex: 1;
     padding: 40px 50px;
-    overflow-y: auto;
 }
 
 .doc-section {
@@ -131,10 +126,7 @@ body {
     margin-bottom: 40px;
     border: 1px solid var(--border-color);
     scroll-margin-top: 40px;
-}
-
-.doc-section {
-    animation: fadeIn 0.5s ease-in-out;
+    animation: fadeIn 0.4s ease-in-out;
 }
 
 @keyframes fadeIn {
@@ -144,14 +136,13 @@ body {
 
 .doc-section:target {
     border-color: var(--primary-color);
-    box-shadow: 0 0 10px rgba(204, 34, 41, 0.15);
+    box-shadow: 0 0 15px rgba(204, 34, 41, 0.2);
 }
 
 .meta-tag {
     color: var(--primary-color);
     font-size: 0.85rem;
     font-weight: bold;
-    text-transform: uppercase;
     display: block;
     margin-bottom: 10px;
 }
@@ -180,7 +171,7 @@ body {
 }
 
 .content ul {
-    padding-right: 20px;
+    padding-right: 25px;
 }
 
 .content li {
@@ -201,25 +192,8 @@ body {
     text-decoration: underline;
 }
 
-.sidebar-toggle {
+.mobile-header {
     display: none;
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    z-index: 1001;
-    background-color: var(--primary-color);
-    color: var(--text-strong);
-    border: none;
-    border-radius: 6px;
-    padding: 8px 15px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
-}
-
-.sidebar-toggle:hover {
-    background-color: var(--primary-hover);
 }
 
 @media (max-width: 900px) {
@@ -227,40 +201,59 @@ body {
         flex-direction: column;
     }
 
-    .sidebar-toggle {
-        display: block;
+    .mobile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: var(--sidebar-bg);
+        color: var(--text-strong);
+        padding: 0 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        z-index: 1001;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .mobile-header span {
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+
+    .hamburger-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--text-strong);
+        padding: 5px 10px;
     }
 
     .sidebar {
         position: fixed;
         right: 0;
-        top: 0;
-        width: 280px;
-        height: 100vh;
+        top: 60px; 
+        width: 290px;
+        height: calc(100vh - 60px);
         z-index: 1000;
         border-left: 1px solid var(--border-color);
-        border-bottom: none;
-        box-shadow: -5px 0 25px rgba(0,0,0,0.5);
-        
-        transform: translateX(100%); 
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -10px 0 30px rgba(0,0,0,0.6);
+        transform: translateX(100%);
+        transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .sidebar.active {
+    .sidebar.open {
         transform: translateX(0);
     }
 
-    .sidebar-toggle.active {
-        right: 235px;
-        background-color: var(--sidebar-bg);
-        border: 1px solid var(--border-color);
-    }
-
     .main-content {
-        padding: 80px 20px 20px 20px;
+        padding: 90px 20px 20px 20px;
     }
     
     .doc-section {
-        padding: 25px 20px;
+        padding: 30px 20px;
+        scroll-margin-top: 80px;
     }
 }

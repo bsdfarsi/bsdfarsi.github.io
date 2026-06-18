@@ -4,13 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بی‌اس‌دی فارسی | BSDFarsi</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-<button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle Sidebar">☰</button>
+
+<div class="mobile-header">
+    <span>بی‌اس‌دی فارسی</span>
+    <button class="hamburger-btn" id="menuBtn" aria-label="Toggle Menu">☰</button>
+</div>
+
 <div class="layout-wrapper">
 
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <h1>بی‌اس‌دی فارسی</h1>
             <p>BSD USER GROUP</p>
@@ -69,7 +79,7 @@
 
         <section id="infrastructure" class="doc-section">
             <span class="meta-tag">NETWORKING & HIGH AVAILABILITY</span>
-            <h2 class="section-title">چرا بی‌اس‌دی برای زیرساخت‌های مدرن؟</h2>
+            <h2 class="section-title">چرا بی‌اس‌دی برای زیرساخت‌های مدرن و High Availability؟</h2>
             <div class="content">
                 <p>در دنیای امروزی ابعاد شبکه و پایداری زیرساخت شاهرگ حیاتی هر بیزینسی است. سیستم‌عامل‌های خانواده BSD به دلیل پشته شبکه (Network Stack) فوق‌العاده بهینه‌شده و معماری یکپارچه، ابزار کلیدی معماران زیرساخت برای مدیریت ترافیک‌های سنگین هستند.</p>
                 <h3>قدرت بومی در پشته شبکه</h3>
@@ -89,29 +99,24 @@
     </main>
 
 </div>
-<script>
-    const toggleBtn = document.getElementById('sidebarToggle');
-    const sidebar = document.querySelector('.sidebar');
 
-    toggleBtn.addEventListener('click', (e) => {
-        sidebar.classList.toggle('active');
-        toggleBtn.classList.toggle('active');
-        
-        if (sidebar.classList.contains('active')) {
-            toggleBtn.innerHTML = '✕';
-        } else {
-            toggleBtn.innerHTML = '☰';
-        }
-        e.stopPropagation();
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const menuLinks = document.querySelectorAll('.sidebar-menu a');
+
+    menuBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        menuBtn.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
     });
 
-    document.addEventListener('click', (e) => {
-        if (!sidebar.contains(e.target) && e.target !== toggleBtn) {
-            sidebar.classList.remove('active');
-            toggleBtn.classList.remove('active');
-            toggleBtn.innerHTML = '☰';
-        }
+    menuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            menuBtn.textContent = '☰';
+        });
     });
 </script>
+
 </body>
 </html>
