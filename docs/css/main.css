@@ -90,10 +90,14 @@ body {
     transition: all 0.2s ease;
 }
 
-.sidebar-menu a:hover {
+.sidebar-menu a:hover, .sidebar-menu a.active {
     background-color: rgba(204, 34, 41, 0.1);
     color: var(--primary-hover);
     padding-right: 20px;
+}
+
+.sidebar-menu a.active {
+    border-right: 3px solid var(--primary-color);
 }
 
 .sidebar-footer {
@@ -125,7 +129,6 @@ body {
     padding: 40px;
     margin-bottom: 40px;
     border: 1px solid var(--border-color);
-    scroll-margin-top: 40px;
     animation: fadeIn 0.4s ease-in-out;
 }
 
@@ -134,20 +137,8 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-.doc-section:target {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 15px rgba(204, 34, 41, 0.2);
-}
-
-.meta-tag {
-    color: var(--primary-color);
-    font-size: 0.85rem;
-    font-weight: bold;
-    display: block;
-    margin-bottom: 10px;
-}
-
-.section-title {
+/* Style Markdown-generated child items neatly inside the template wrapper */
+.doc-section h1 {
     color: var(--text-strong);
     margin-top: 0;
     font-size: 2rem;
@@ -156,40 +147,51 @@ body {
     border-bottom: 1px solid var(--border-color);
 }
 
-.content h3 {
+.doc-section h2 {
     color: var(--text-strong);
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     margin-top: 35px;
     border-right: 3px solid var(--primary-color);
     padding-right: 10px;
 }
 
-.content p {
+.doc-section h3 {
+    color: var(--text-strong);
+    font-size: 1.15rem;
+    margin-top: 25px;
+}
+
+.doc-section p {
     text-align: justify;
     font-size: 1.05rem;
     color: var(--text-color);
 }
 
-.content ul {
+.doc-section ul {
     padding-right: 25px;
 }
 
-.content li {
+.doc-section li {
     margin-bottom: 10px;
     font-size: 1.05rem;
 }
 
-.content strong {
+.doc-section strong {
     color: var(--text-strong);
 }
 
-.content a {
+.doc-section a {
     color: var(--primary-hover);
     text-decoration: none;
 }
 
-.content a:hover {
-    text-decoration: underline;
+/* Callouts / Blockquotes */
+.doc-section blockquote {
+    background: rgba(204, 34, 41, 0.05); 
+    border: 1px dashed rgba(255, 69, 69, 0.4); 
+    border-radius: 8px; 
+    padding: 2px 25px; 
+    margin: 25px 0;
 }
 
 .mobile-header {
@@ -254,6 +256,5 @@ body {
     
     .doc-section {
         padding: 30px 20px;
-        scroll-margin-top: 80px;
     }
 }

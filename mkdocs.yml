@@ -1,0 +1,15 @@
+site_name: بی‌اس‌دی فارسی
+site_url: https://bsdfarsi.github.io
+repo_url: https://github.com/bsdfarsi/bsdfarsi.github.io
+
+theme:
+  name: null
+  custom_dir: theme
+
+nav:
+  - اولین رویداد (FreeBSD Day): first-meet.md
+  - مرام‌نامه جامعه: rules.md
+  - تحلیل لایسنس (BSD vs GPL): license.md
+
+extra_css:
+  - css/main.css

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ config.site_name }}</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { background-color: #0d1117; color: #c9d1d9; font-family: 'Vazirmatn', sans-serif; margin: 0; }
+        .layout-wrapper { display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background-color: #161b22; padding: 20px; }
+        .main-content { flex: 1; padding: 40px; }
+    </style>
+
+    {% for path in config.extra_css %}
+    <link rel="stylesheet" href="{{ path | url }}">
+    {% endfor %}
+</head>
+<body>
+
+<div class="mobile-header">
+    <span>{{ config.site_name }}</span>
+    <button class="hamburger-btn" id="menuBtn" aria-label="Toggle Menu">☰</button>
+</div>
+
+<div class="layout-wrapper">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h1>بی‌اس‌دی فارسی</h1>
+            <p>BSD USER GROUP</p>
+        </div>
+        
+        <ul class="sidebar-menu">
+            {% for item in nav %}
+            <li>
+                <a href="{{ item.url | url }}" class="{% if item.active %}active{% endif %}">
+                    {{ item.title }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <div class="sidebar-footer">
+            <a href="https://github.com/bsdfarsi" target="_blank">گیت‌هاب</a> | 
+            <a href="https://t.me/bsdfarsi" target="_blank">تلگرام</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <article class="doc-section">
+            {{ page.content }}
+        </article>
+    </main>
+
+</div>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const menuLinks = document.querySelectorAll('.sidebar-menu a');
+
+    if (menuBtn && sidebar) {
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            menuBtn.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
+        });
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                sidebar.classList.remove('open');
+                menuBtn.textContent = '☰';
+            });
+        });
+    }
+</script>
+
+</body>
+</html>
