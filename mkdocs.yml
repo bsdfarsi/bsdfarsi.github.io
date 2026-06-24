@@ -7,7 +7,7 @@ theme:
   custom_dir: theme
 
 nav:
-  - اولین رویداد (FreeBSD Day): first-meet.md
+  - اولین رویداد (FreeBSD Day): index.md
   - مرام‌نامه جامعه: rules.md
   - تحلیل لایسنس (BSD vs GPL): license.md
 
