@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اولین رویداد (FreeBSD Day) | بی‌اس‌دی فارسی</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { background-color: #0d1117; color: #c9d1d9; font-family: 'Vazirmatn', sans-serif; margin: 0; }
+        .layout-wrapper { display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background-color: #161b22; padding: 20px; }
+        .main-content { flex: 1; padding: 40px; }
+    </style>
+
+    
+    <link rel="stylesheet" href="../css/main.css">
+    
+</head>
+<body>
+
+<div class="mobile-header">
+    <span>بی‌اس‌دی فارسی</span>
+    <button class="hamburger-btn" id="menuBtn" aria-label="Toggle Menu">☰</button>
+</div>
+
+<div class="layout-wrapper">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h1>بی‌اس‌دی فارسی</h1>
+            <p>BSD USER GROUP</p>
+        </div>
+        
+        <ul class="sidebar-menu">
+            
+            <li>
+                <a href="./" class="active">
+                    اولین رویداد (FreeBSD Day)
+                </a>
+            </li>
+            
+            <li>
+                <a href="../rules/" class="">
+                    مرام‌نامه جامعه
+                </a>
+            </li>
+            
+            <li>
+                <a href="../license/" class="">
+                    تحلیل لایسنس (BSD vs GPL)
+                </a>
+            </li>
+            
+        </ul>
+
+        <div class="sidebar-footer">
+            <a href="https://github.com/bsdfarsi" target="_blank">گیت‌هاب</a> | 
+            <a href="https://t.me/bsdfarsi" target="_blank">تلگرام</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <article class="doc-section">
+            <h1 id="_1">اولین رویداد آنلاین جامعه بی‌اس‌دی فارسی 🎉</h1>
+<p>به مناسبت <strong>روز جهانی فری‌بی‌اس‌دی (FreeBSD Day)</strong>، بسیار مفتخریم که برگزاری اولین رویداد آنلاین جامعه <strong>بی‌اس‌دی فارسی</strong> را اعلام کنیم</p>
+<blockquote>
+<h3 id="_2">مشخصات و زمان برگزاری نشست:</h3>
+<ul>
+<li><strong>زمان رویداد:</strong> جمعه ۵ خرداد، ساعت <strong>۲۰:۰۰</strong> به وقت تهران</li>
+<li><strong>بستر آنلاین:</strong> اتاق اختصاصی در پلتفرم <strong>گوگل میت (Google Meet)</strong></li>
+</ul>
+</blockquote>
+<p>در این رویداد صمیمانه، قصد داریم متخصصین، توسعه‌دهندگان و علاقه‌مندان به پشته‌های مهندسی سیستم را دور هم جمع کنیم. برنامه‌های اصلی این دورهمی به شرح زیر خواهد بود: </p>
+<ul>
+<li><strong>گفتگو و گپ‌وگفت آزاد:</strong> گفتگو و گپ‌وگفت آزاد: اشتراک‌گذاری تجربه‌های عملی در استفاده از سیستم‌عامل FreeBSD در محیط‌های پروداکشن و خانگی</li>
+</ul>
+<blockquote>
+<p>رویداد به پایان رسید.</p>
+</blockquote>
+        </article>
+    </main>
+
+</div>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const menuLinks = document.querySelectorAll('.sidebar-menu a');
+
+    if (menuBtn && sidebar) {
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            menuBtn.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
+        });
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                sidebar.classList.remove('open');
+                menuBtn.textContent = '☰';
+            });
+        });
+    }
+</script>
+
+</body>
+</html>

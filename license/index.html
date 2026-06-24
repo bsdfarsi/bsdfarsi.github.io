@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحلیل لایسنس (BSD vs GPL) | بی‌اس‌دی فارسی</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { background-color: #0d1117; color: #c9d1d9; font-family: 'Vazirmatn', sans-serif; margin: 0; }
+        .layout-wrapper { display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background-color: #161b22; padding: 20px; }
+        .main-content { flex: 1; padding: 40px; }
+    </style>
+
+    
+    <link rel="stylesheet" href="../css/main.css">
+    
+</head>
+<body>
+
+<div class="mobile-header">
+    <span>بی‌اس‌دی فارسی</span>
+    <button class="hamburger-btn" id="menuBtn" aria-label="Toggle Menu">☰</button>
+</div>
+
+<div class="layout-wrapper">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h1>بی‌اس‌دی فارسی</h1>
+            <p>BSD USER GROUP</p>
+        </div>
+        
+        <ul class="sidebar-menu">
+            
+            <li>
+                <a href="../first-meet/" class="">
+                    اولین رویداد (FreeBSD Day)
+                </a>
+            </li>
+            
+            <li>
+                <a href="../rules/" class="">
+                    مرام‌نامه جامعه
+                </a>
+            </li>
+            
+            <li>
+                <a href="./" class="active">
+                    تحلیل لایسنس (BSD vs GPL)
+                </a>
+            </li>
+            
+        </ul>
+
+        <div class="sidebar-footer">
+            <a href="https://github.com/bsdfarsi" target="_blank">گیت‌هاب</a> | 
+            <a href="https://t.me/bsdfarsi" target="_blank">تلگرام</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <article class="doc-section">
+            <h1 id="bsd-gpl">تحلیل فلسفی و حقوقی: تقابل لایسنس BSD و GPL</h1>
+<p>در پارادایم متن‌باز، مفهوم «آزادی» یک واژه واحد با دو تفسیر کاملاً متضاد است. این تضاد فلسفی و حقوقی، خود را در قالب دو لایسنس بومی دنیای سیستم‌عامل یعنی BSD (Permissive) و GPL (Copyleft) نشان می‌دهد. درک این تفاوت برای مهندسین سیستم و معماران زیرساخت پیش از انتخاب چیدمان ابزارها حیاتی است.</p>
+<h3 id="_1">فلسفه آزادی: آزادی کاربر در برابر آزادی نرم‌افزار</h3>
+<p>بزرگ‌ترین مرز جدایی این دو مجوز، تعریف آن‌ها از مرزهای حقوقی توسعه است:</p>
+<ul>
+<li><strong>مجوز بی‌اس‌دی (آزادی مطلق کاربر):</strong> فلسفه برکلی بر این باور است که اگر نرم‌افزار آزاد است، کاربر باید حق داشته باشد هر کاری خواست با آن انجام دهد؛ حتی متن‌بسته کردن آن! لایسنس BSD عملاً هیچ محدودیتی اعمال نمی‌کند. شما می‌توانید سورس‌کد را بردارید، تغییر دهید، آن را با کدهای انحصاری (Proprietary) خود ترکیب کنید و محصول را بدون انتشار سورس‌کد جدید بفروشید. تنها شرط، حفظ نام پدیدآورنده اولیه است.</li>
+<li><strong>مجوز جی‌پی‌ال (آزادی مشروط نرم‌افزار):</strong> فلسفه ریچارد استالمن و FSF معتقد است نرم‌افزار باید برای همیشه آزاد بماند، حتی به قیمت محدود کردن آزادی کاربر. GPL یک مجوز <strong>Copyleft</strong> یا اصطلاحاً «ویروسی» است. طبق قانون GPL، اگر شما از کدی با این لایسنس در پروژه خود استفاده کنید، کل پروژه نهایی شما تبدیل به یک اثر مشتق‌شده (Derivative Work) می‌شود و <strong>مجبورید</strong> سورس‌کد نهایی خود را نیز تحت لایسنس GPL به صورت عمومی منتشر کنید.</li>
+</ul>
+        </article>
+    </main>
+
+</div>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const menuLinks = document.querySelectorAll('.sidebar-menu a');
+
+    if (menuBtn && sidebar) {
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            menuBtn.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
+        });
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                sidebar.classList.remove('open');
+                menuBtn.textContent = '☰';
+            });
+        });
+    }
+</script>
+
+</body>
+</html>
