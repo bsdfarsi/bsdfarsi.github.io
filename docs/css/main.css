@@ -28,6 +28,14 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+.doc-section img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 30px auto;
+    border-radius: 6px;
+}
+
 .layout-wrapper {
     display: flex;
     min-height: 100vh;
