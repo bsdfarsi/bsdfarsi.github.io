@@ -7,6 +7,7 @@ theme:
   custom_dir: theme
 
 nav:
+  - معرفی سیستم‌عامل DragonflyBSD: dragonflybsd.md
   - اولین رویداد (FreeBSD Day): index.md
   - مرام‌نامه جامعه: rules.md
   - تحلیل لایسنس (BSD vs GPL): license.md
