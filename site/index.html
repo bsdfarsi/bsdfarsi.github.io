@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نصب NetBSD در QEMU/KVM | بی‌اس‌دی فارسی</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Vazirmatn', sans-serif; margin: 0; }
+        .layout-wrapper { display: flex; min-height: 100vh; }
+    </style>
+
+    
+    <link rel="stylesheet" href="css/main.css">
+    
+</head>
+<script>
+    // Theme & Language initialization (at the top to prevent flicker)
+    (function() {
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
+        const currentLang = localStorage.getItem('lang') || 'fa';
+        document.documentElement.setAttribute('lang', currentLang);
+        document.documentElement.setAttribute('dir', currentLang === 'en' ? 'ltr' : 'rtl');
+    })();
+</script>
+<body>
+
+<header class="site-header" id="siteHeader">
+    <div class="header-inner">
+
+        <button class="hamburger-btn" id="menuBtn" aria-label="Toggle Menu" aria-controls="sidebar" aria-expanded="false">☰</button>
+
+        <a class="site-brand" href="./">
+            <span class="brand-mark" aria-hidden="true">BSD</span>
+            <span class="brand-text">
+                <span class="brand-name">
+                    <span class="lang-fa">بی‌اس‌دی فارسی</span>
+                    <span class="lang-en">BSD Farsi</span>
+                </span>
+                <span class="brand-tagline">BSD USER GROUP</span>
+            </span>
+        </a>
+
+        <div class="header-search" id="headerSearch"
+             data-index="./search/search_index.json"
+             data-base="./">
+            <span class="search-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path d="M16.5 16.5 21 21"></path>
+                </svg>
+            </span>
+            <input type="search" class="search-input" id="siteSearch" placeholder="جستجو در سایت…"
+                   aria-label="جستجو در سایت" autocomplete="off" spellcheck="false">
+            <div class="search-results" id="searchResults"></div>
+        </div>
+
+        <div class="header-actions">
+            <div class="lang-toggle" role="group" aria-label="انتخاب زبان / Language selection">
+                <button type="button" class="lang-btn active" data-lang="fa" id="langFa" aria-pressed="true" title="فارسی">فا</button>
+                <button type="button" class="lang-btn" data-lang="en" id="langEn" aria-pressed="false" title="English">EN</button>
+            </div>
+            <div class="theme-toggle">
+                <label class="switch" for="theme-switch" aria-label="تغییر پوسته تاریک و روشن">
+                    <input type="checkbox" id="theme-switch">
+                    <span class="slider">
+                        <svg class="icon icon-sun" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="icon icon-moon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </span>
+                </label>
+            </div>
+            <div class="header-separator" aria-hidden="true"></div>
+            <div class="header-socials">
+                <a class="header-link" href="https://t.me/bsdfarsi" target="_blank" rel="noopener" aria-label="کانال تلگرام بی‌اس‌دی فارسی">
+                    <svg class="social-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8-1.68 7.92c-.12.58-.47.72-.96.45l-2.6-1.92-1.25 1.21c-.14.14-.26.26-.53.26l.19-2.65 4.82-4.35c.21-.19-.05-.29-.32-.11l-5.96 3.75-2.57-.8c-.56-.17-.57-.56.12-.83l10.05-3.87c.47-.17.88.11.73.94z"/>
+                    </svg>
+                </a>
+                <a class="header-link" href="https://github.com/bsdfarsi" target="_blank" rel="noopener" aria-label="گیت‌هاب بی‌اس‌دی فارسی">
+                    <svg class="social-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</header>
+
+<div class="layout-wrapper">
+
+    <aside class="sidebar" id="sidebar">
+        <ul class="sidebar-menu">
+            
+            <li>
+                <a href="." class="active">
+                    <span class="lang-fa">نصب NetBSD در QEMU/KVM</span>
+                    <span class="lang-en">
+                        Deploying NetBSD on QEMU/KVM
+                    </span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="dragonflybsd/" class="">
+                    <span class="lang-fa">معرفی سیستم‌عامل DragonflyBSD</span>
+                    <span class="lang-en">
+                        Introduction to DragonFly BSD
+                        
+                    </span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="freebsd-day/" class="">
+                    <span class="lang-fa">اولین رویداد (FreeBSD Day)</span>
+                    <span class="lang-en">
+                        First Online Event (FreeBSD Day)
+                        
+                    </span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="rules/" class="">
+                    <span class="lang-fa">مرام‌نامه جامعه</span>
+                    <span class="lang-en">
+                        Community Code of Conduct
+                        
+                    </span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="license/" class="">
+                    <span class="lang-fa">تحلیل لایسنس (BSD vs GPL)</span>
+                    <span class="lang-en">
+                        License Analysis (BSD vs GPL)
+                        
+                    </span>
+                </a>
+            </li>
+            
+        </ul>
+
+        <div class="sidebar-footer">
+            <a href="https://github.com/bsdfarsi" target="_blank" rel="noopener" aria-label="GitHub">
+                <svg class="social-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                <span class="lang-fa">گیت‌هاب</span>
+                <span class="lang-en">GitHub</span>
+            </a> | 
+            <a href="https://t.me/bsdfarsi" target="_blank" rel="noopener" aria-label="Telegram">
+                <svg class="social-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8-1.68 7.92c-.12.58-.47.72-.96.45l-2.6-1.92-1.25 1.21c-.14.14-.26.26-.53.26l.19-2.65 4.82-4.35c.21-.19-.05-.29-.32-.11l-5.96 3.75-2.57-.8c-.56-.17-.57-.56.12-.83l10.05-3.87c.47-.17.88.11.73.94z"/>
+                </svg>
+                <span class="lang-fa">تلگرام</span>
+                <span class="lang-en">Telegram</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <article class="doc-section">
+            <div class="lang-fa">
+<h1 id="netbsd-qemukvm">راه‌اندازی و استقرار NetBSD بر بستر QEMU/KVM</h1>
+<p>سیستم‌عامل NetBSD به پرتابل بودن (Portability)، طراحی ماژولار و کدهای به شدت تمیز شهرت دارد؛ شعار معروف <em>"Of course it runs NetBSD"</em> گواه اجرای آن روی ده‌ها معماری سخت‌افزاری مختلف است. اما در محیط‌های زیرساخت و مجازی‌سازی مدرن لینوکس (بر پایه KVM)، اجرای بهینه و با راندمان بالای NetBSD نیازمند پیکربندی درست شتاب‌دهنده سخت‌افزاری، درایورهای پرسرعت Paravirtualization (مجموعه VirtIO) و مدیریت صحیح کنسول سریال یا گرافیکی است.</p>
+<p>در این مستند فنی، مراحل راه‌اندازی NetBSD 10.x روی QEMU/KVM را از ایجاد دیسک و تعریف سوییچ‌های عملکردی تا مراحل نصب و تنظیمات پایه بررسی می‌کنیم.</p>
+<p><img src="images/dfly.png" alt="NetBSD QEMU Installation" style="width: 100%; max-width: 800px;"></p>
+<blockquote>
+<h3 id="qcow2">۱. آماده‌سازی ایمیج دیسک با فرمت qcow2</h3>
+</blockquote>
+<p>برای کارایی بهتر در لایه استوریج و بهره‌گیری از قابلیت Thin Provisioning، یک دیسک با فرمت <code>qcow2</code> می‌سازیم:</p>
+<pre><code class="language-bash">qemu-img create -f qcow2 netbsd.qcow2 20G
+</code></pre>
+<p><br></p>
+<blockquote>
+<h3 id="kvm-virtio">۲. اجرای ماشین مجازی با سوییچ‌های بهینه‌سازی (KVM + VirtIO)</h3>
+</blockquote>
+<p>برای اینکه بیشترین بازدهی I/O و CPU حاصل شود، از درایورهای پاراویرچوال <code>virtio-net</code> و <code>virtio-blk</code> استفاده می‌کنیم که در کرنل‌های مدرن NetBSD به صورت Native پشتیبانی می‌شوند:</p>
+<pre><code class="language-bash">qemu-system-x86_64 \
+    -enable-kvm \
+    -m 2048 \
+    -smp 2 \
+    -cpu host \
+    -drive file=netbsd.qcow2,if=virtio,format=qcow2,cache=none \
+    -cdrom NetBSD-10.0-amd64.iso \
+    -boot d \
+    -netdev user,id=net0,hostfwd=tcp::2222-:22 \
+    -device virtio-net-pci,netdev=net0 \
+    -display default
+</code></pre>
+<p><strong>نکات مهم معماری در این فرمان:</strong>
+* <strong><code>-cpu host</code> و <code>-enable-kvm</code>:</strong> دسترسی مستقیم به Instruction Setهای پردازنده فیزیکی بدون لایه شبیه‌سازی نرم‌افزاری.
+* <strong><code>if=virtio</code> و <code>virtio-net-pci</code>:</strong> حذف سربار درایورهای شبیه‌سازی‌شده IDE یا e1000 و ارتباط با باس پرسرعت VirtIO.
+* <strong><code>hostfwd=tcp::2222-:22</code>:</strong> مپ کردن پورت SSH ماشین مهمان به پورت ۲۲۲۲ هاست جهت دسترسی ریموت بدون نیاز به بریج شبکه.</p>
+<p><br></p>
+<blockquote>
+<h3 id="sysinst">۳. مراحل نصب از طریق نصاب sysinst</h3>
+</blockquote>
+<p>پس از بوت شدن ایمیج، وارد محیط کاربری مبتنی بر کاراکتر (Curses-based) نصاب بومی نت‌بی‌اس یعنی <code>sysinst</code> می‌شوید:</p>
+<ol>
+<li>زبان را روی <code>a: Installation in English</code> انتخاب کنید.</li>
+<li>گزینه <code>a: Install NetBSD to hard disk</code> را انتخاب نمایید.</li>
+<li>درایور دیسک شناسایی‌شده را تایید کنید (به عنوان مثال <code>ld0</code> که دیسک VirtIO است).</li>
+<li>نوع پارتیشن‌بندی دیسک را بر اساس نیاز انتخاب کنید (برای ماشین‌های استاندارد BIOS/MBR گزینه <code>MBR partitions</code> یا برای سیستم‌های مبتنی بر UEFI گزینه <code>GPT</code>).</li>
+<li>فایل‌سیستم را روی FFSv2 با پشتیبانی لاگینگ (<code>WAPBL</code>) قرار دهید تا در قطعی‌های ناگهانی برق نیازی به اسکن کامل دیسک نباشد.</li>
+<li>مجموعه بسته‌های پیش‌فرض (<code>Full installation</code>) را انتخاب کرده و اجازه دهید استخراج بسته‌ها از روی مدیا انجام گیرد.</li>
+</ol>
+<p><br></p>
+<blockquote>
+<h3 id="ssh">۴. تنظیمات پس از نصب و آماده‌سازی SSH</h3>
+</blockquote>
+<p>پیش از ریبوت، چند گام اساسی در منوی پیکربندی نهایی نصاب پیشنهاد می‌شود:</p>
+<ul>
+<li><strong>تنظیم گذرواژه ریشه (root password):</strong> یک پسورد امن برای کاربر root تعیین کنید.</li>
+<li><strong>ایجاد کاربر عملیاتی:</strong> ساخت یک کاربر معمولی و عضویت آن در گروه <code>wheel</code> برای انجام امور مدیریتی.</li>
+<li><strong>فعال‌سازی سرویس sshd:</strong> در صورتی که در مرحله نصب فعال نشد، پس از اولین بوت در <code>/etc/rc.conf</code> خط زیر را اضافه کنید:</li>
+</ul>
+<pre><code class="language-sh">sshd=YES
+</code></pre>
+<p>همچنین کارت شبکه به عنوان <code>vioif0</code> شناخته می‌شود. برای دریافت خودکار IP از سرویس DHCP در <code>/etc/rc.conf</code> مقدار زیر را اعمال نمایید:</p>
+<pre><code class="language-sh">ifconfig_vioif0=&quot;dhcp&quot;
+</code></pre>
+<p><br></p>
+<blockquote>
+<h3 id="_1">۵. بوت نهایی بدون مدیای نصب</h3>
+</blockquote>
+<p>پس از اتمام مراحل، ماشین را خاموش کرده و برای بوت‌های دائمی، مدیا را جدا کرده و سیستم را بالا بیاورید:</p>
+<pre><code class="language-bash">qemu-system-x86_64 \
+    -enable-kvm \
+    -m 2048 \
+    -smp 2 \
+    -cpu host \
+    -drive file=netbsd.qcow2,if=virtio,format=qcow2,cache=none \
+    -netdev user,id=net0,hostfwd=tcp::2222-:22 \
+    -device virtio-net-pci,netdev=net0 \
+    -nographic
+</code></pre>
+<blockquote>
+<p><strong>نکته برای محیط‌های هدلس سروری:</strong> با قرار دادن پرچم <code>-nographic</code> و هدایت کنسول NetBSD به <code>com0</code> در فایل <code>/boot.cfg</code>، می‌توانید مستقیماً ترمینال NetBSD را درون TTY شل لینوکسی خود بدون نیاز به پنجره گرافیکی در اختیار داشته باشید.</p>
+</blockquote>
+</div>
+<div class="lang-en">
+<h1 id="deploying-and-running-netbsd-on-qemukvm">Deploying and Running NetBSD on QEMU/KVM</h1>
+<p>The NetBSD operating system is renowned for its portability, modular design, and clean codebase; its famous slogan <em>"Of course it runs NetBSD"</em> bears testament to its ability to run across dozens of hardware architectures. In modern Linux infrastructure and virtualization environments (based on KVM), achieving optimal performance with NetBSD requires proper configuration of hardware acceleration, high-throughput paravirtualization drivers (the VirtIO suite), and appropriate serial or graphical console management.</p>
+<p>In this technical guide, we walk through setting up NetBSD 10.x on QEMU/KVM—from creating disk images and configuring performance flags to completing installation and essential post-install setup.</p>
+<p><img src="images/dfly.png" alt="NetBSD QEMU Installation" style="width: 100%; max-width: 800px;"></p>
+<blockquote>
+<h3 id="1-preparing-the-disk-image-qcow2-format">1. Preparing the Disk Image (qcow2 Format)</h3>
+</blockquote>
+<p>For optimal storage performance and to leverage thin provisioning capabilities, create a virtual disk in <code>qcow2</code> format:</p>
+<pre><code class="language-bash">qemu-img create -f qcow2 netbsd.qcow2 20G
+</code></pre>
+<p><br></p>
+<blockquote>
+<h3 id="2-launching-the-virtual-machine-with-optimized-flags-kvm-virtio">2. Launching the Virtual Machine with Optimized Flags (KVM + VirtIO)</h3>
+</blockquote>
+<p>To achieve maximum I/O and CPU throughput, utilize the <code>virtio-net</code> and <code>virtio-blk</code> paravirtualized drivers, which are natively supported in modern NetBSD kernels:</p>
+<pre><code class="language-bash">qemu-system-x86_64 \
+    -enable-kvm \
+    -m 2048 \
+    -smp 2 \
+    -cpu host \
+    -drive file=netbsd.qcow2,if=virtio,format=qcow2,cache=none \
+    -cdrom NetBSD-10.0-amd64.iso \
+    -boot d \
+    -netdev user,id=net0,hostfwd=tcp::2222-:22 \
+    -device virtio-net-pci,netdev=net0 \
+    -display default
+</code></pre>
+<p><strong>Key architectural flags in this command:</strong>
+* <strong><code>-cpu host</code> and <code>-enable-kvm</code>:</strong> Direct pass-through of physical CPU instruction sets without software emulation overhead.
+* <strong><code>if=virtio</code> and <code>virtio-net-pci</code>:</strong> Bypasses emulation layers of legacy IDE or e1000 adapters, utilizing high-speed VirtIO bus communication.
+* <strong><code>hostfwd=tcp::2222-:22</code>:</strong> Forwards host port 2222 to guest SSH port 22 for convenient remote access without requiring network bridge setup.</p>
+<p><br></p>
+<blockquote>
+<h3 id="3-installation-steps-via-sysinst">3. Installation Steps via sysinst</h3>
+</blockquote>
+<p>Once the ISO boots, you enter the curses-based NetBSD installer, <code>sysinst</code>:</p>
+<ol>
+<li>Select language: <code>a: Installation in English</code>.</li>
+<li>Choose <code>a: Install NetBSD to hard disk</code>.</li>
+<li>Confirm the detected disk device (typically <code>ld0</code> for the VirtIO block device).</li>
+<li>Select partitioning scheme according to your firmware (<code>MBR partitions</code> for standard BIOS or <code>GPT</code> for UEFI).</li>
+<li>Format the filesystem as FFSv2 with logging support enabled (<code>WAPBL</code>) to prevent lengthy fsck scans upon unexpected shutdowns.</li>
+<li>Choose the default package set (<code>Full installation</code>) and proceed with extracting installation sets from the install media.</li>
+</ol>
+<p><br></p>
+<blockquote>
+<h3 id="4-post-installation-ssh-configuration">4. Post-Installation &amp; SSH Configuration</h3>
+</blockquote>
+<p>Before rebooting, perform these essential steps in the post-install configuration menu:</p>
+<ul>
+<li><strong>Set root password:</strong> Choose a strong password for administrative access.</li>
+<li><strong>Add an operational user:</strong> Create an unprivileged user and add them to the <code>wheel</code> group for administrative tasks.</li>
+<li><strong>Enable SSH daemon (<code>sshd</code>):</strong> If not enabled during install, append to <code>/etc/rc.conf</code>:</li>
+</ul>
+<pre><code class="language-sh">sshd=YES
+</code></pre>
+<p>The VirtIO network interface is recognized as <code>vioif0</code>. Configure dynamic IP allocation via DHCP in <code>/etc/rc.conf</code>:</p>
+<pre><code class="language-sh">ifconfig_vioif0=&quot;dhcp&quot;
+</code></pre>
+<p><br></p>
+<blockquote>
+<h3 id="5-final-boot-without-installation-media">5. Final Boot Without Installation Media</h3>
+</blockquote>
+<p>After installation completes, shut down the VM, detach the installation media, and boot permanently from disk:</p>
+<pre><code class="language-bash">qemu-system-x86_64 \
+    -enable-kvm \
+    -m 2048 \
+    -smp 2 \
+    -cpu host \
+    -drive file=netbsd.qcow2,if=virtio,format=qcow2,cache=none \
+    -netdev user,id=net0,hostfwd=tcp::2222-:22 \
+    -device virtio-net-pci,netdev=net0 \
+    -nographic
+</code></pre>
+<blockquote>
+<p><strong>Tip for headless server setups:</strong> Passing the <code>-nographic</code> flag along with redirecting NetBSD's console to <code>com0</code> in <code>/boot.cfg</code> allows full serial console interaction right inside your host Linux shell TTY without any graphic window dependencies.</p>
+</blockquote>
+</div>
+        </article>
+    </main>
+
+</div>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const menuLinks = document.querySelectorAll('.sidebar-menu a');
+
+    if (menuBtn && sidebar) {
+        const setSidebar = open => {
+            sidebar.classList.toggle('open', open);
+            menuBtn.textContent = open ? '✕' : '☰';
+            menuBtn.setAttribute('aria-expanded', String(open));
+        };
+
+        menuBtn.addEventListener('click', () => {
+            setSidebar(!sidebar.classList.contains('open'));
+        });
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => setSidebar(false));
+        });
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && sidebar.classList.contains('open')) {
+                setSidebar(false);
+                menuBtn.focus();
+            }
+        });
+    }
+
+    // Theme Toggle Logic
+    const themeSwitch = document.getElementById('theme-switch');
+    const htmlElement = document.documentElement;
+    
+    // Sync switch state with current theme
+    if (htmlElement.getAttribute('data-theme') === 'light') {
+        themeSwitch.checked = true;
+    }
+
+    themeSwitch.addEventListener('change', () => {
+        const theme = themeSwitch.checked ? 'light' : 'dark';
+        htmlElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+    });
+
+    // Language Toggle Logic (On-Demand Switcher)
+    const langFaBtn = document.getElementById('langFa');
+    const langEnBtn = document.getElementById('langEn');
+
+    function setLanguage(lang) {
+        htmlElement.setAttribute('lang', lang);
+        htmlElement.setAttribute('dir', lang === 'en' ? 'ltr' : 'rtl');
+        localStorage.setItem('lang', lang);
+
+        if (langFaBtn && langEnBtn) {
+            langFaBtn.classList.toggle('active', lang === 'fa');
+            langFaBtn.setAttribute('aria-pressed', String(lang === 'fa'));
+            langEnBtn.classList.toggle('active', lang === 'en');
+            langEnBtn.setAttribute('aria-pressed', String(lang === 'en'));
+        }
+
+        const siteSearch = document.getElementById('siteSearch');
+        if (siteSearch) {
+            siteSearch.placeholder = lang === 'en' ? 'Search documentation…' : 'جستجو در سایت…';
+            siteSearch.setAttribute('aria-label', lang === 'en' ? 'Search documentation' : 'جستجو در سایت');
+        }
+
+        const activeLink = document.querySelector('.sidebar-menu a.active');
+        if (activeLink) {
+            const titleEl = activeLink.querySelector(lang === 'en' ? '.lang-en' : '.lang-fa');
+            if (titleEl) {
+                const siteName = lang === 'en' ? 'BSD Farsi' : 'بی‌اس‌دی فارسی';
+                document.title = `${titleEl.textContent.trim()} | ${siteName}`;
+            }
+        }
+
+        // Dispatch on-demand event for any page hooks or listeners
+        window.dispatchEvent(new CustomEvent('languageChange', { detail: { lang } }));
+    }
+
+    if (langFaBtn && langEnBtn) {
+        const initialLang = localStorage.getItem('lang') || 'fa';
+        setLanguage(initialLang);
+
+        langFaBtn.addEventListener('click', () => setLanguage('fa'));
+        langEnBtn.addEventListener('click', () => setLanguage('en'));
+    }
+
+    // Header shadow once the page is scrolled
+    const siteHeader = document.getElementById('siteHeader');
+
+    if (siteHeader) {
+        const syncHeaderShadow = () => {
+            siteHeader.classList.toggle('scrolled', window.scrollY > 4);
+        };
+        window.addEventListener('scroll', syncHeaderShadow, { passive: true });
+        syncHeaderShadow();
+    }
+
+    // Search
+    const searchBox = document.getElementById('headerSearch');
+
+    if (searchBox) {
+        const input = searchBox.querySelector('.search-input');
+        const resultsBox = searchBox.querySelector('.search-results');
+        const indexUrl = searchBox.dataset.index;
+        const baseUrl = searchBox.dataset.base || '';
+
+        // Zero-width marks, harakat and spaces are ignored while typing
+        const IGNORABLE = '[\\s\\u200b-\\u200f\\u2060-\\u206f\\u064b-\\u0652\\ufeff]*';
+        // Every spelling variant of a letter maps to a class covering them all,
+        // so a query typed with Arabic letters still matches the Persian text.
+        const VARIANTS = {
+            'ی': '[یيى]', 'ي': '[یيى]', 'ى': '[یيى]',
+            'ک': '[کک]', 'ك': '[کک]',
+            'ا': '[اأإآٱ]', 'أ': '[اأإآٱ]', 'إ': '[اأإآٱ]',
+            'آ': '[اأإآٱ]', 'ٱ': '[اأإآٱ]',
+            'ه': '[هة]', 'ة': '[هة]',
+            'و': '[وؤ]', 'ؤ': '[وؤ]'
+        };
+
+        let docs = null;
+        let loading = null;
+        let activeIndex = -1;
+        let resultLinks = [];
+
+        const escapeChar = ch => ch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+        // Turn a query token into a tolerant pattern so that Arabic/Persian
+        // spelling variants and ZWNJ still match the indexed text.
+        const tokenPattern = token => Array.from(token)
+            .map(ch => (/\s/.test(ch) ? IGNORABLE : (VARIANTS[ch] || escapeChar(ch))))
+            .join('');
+
+        const buildPattern = query => {
+            const tokens = query.split(/\s+/).filter(Boolean).map(tokenPattern);
+            return tokens.length ? new RegExp(tokens.join('|'), 'gi') : null;
+        };
+
+        const countMatches = (text, re) => {
+            re.lastIndex = 0;
+            const matches = text.match(re);
+            return matches ? matches.length : 0;
+        };
+
+        const search = query => {
+            const re = buildPattern(query);
+            if (!re || !docs) return [];
+
+            const hits = [];
+            for (const doc of docs) {
+                const title = doc.title || '';
+                const text = doc.text || '';
+                const inTitle = countMatches(title, re);
+                const inText = countMatches(text, re);
+                if (!inTitle && !inText) continue;
+                hits.push({ doc, title, text, score: inTitle * 6 + inText });
+            }
+
+            hits.sort((a, b) => b.score - a.score);
+            return hits.slice(0, 12);
+        };
+
+        const loadIndex = () => {
+            if (!loading) {
+                loading = fetch(indexUrl)
+                    .then(response => {
+                        if (!response.ok) throw new Error(response.status);
+                        return response.json();
+                    })
+                    .then(data => { docs = (data && data.docs) || []; })
+                    .catch(() => { docs = []; });
+            }
+            return loading;
+        };
+
+        // Build highlighted text as DOM nodes (never inject raw HTML)
+        const highlight = (text, re) => {
+            const fragment = document.createDocumentFragment();
+            re.lastIndex = 0;
+            let last = 0;
+            let match;
+
+            while ((match = re.exec(text)) !== null) {
+                if (match.index > last) {
+                    fragment.appendChild(document.createTextNode(text.slice(last, match.index)));
+                }
+                const mark = document.createElement('mark');
+                mark.textContent = match[0];
+                fragment.appendChild(mark);
+                last = match.index + match[0].length;
+                if (!match[0].length) re.lastIndex++;
+            }
+
+            if (last < text.length) {
+                fragment.appendChild(document.createTextNode(text.slice(last)));
+            }
+            return fragment;
+        };
+
+        const buildSnippet = (text, re) => {
+            re.lastIndex = 0;
+            const match = re.exec(text);
+            const from = match ? Math.max(0, match.index - 50) : 0;
+            const to = match
+                ? Math.min(text.length, match.index + match[0].length + 90)
+                : Math.min(text.length, 160);
+
+            return (from > 0 ? '…' : '') +
+                   text.slice(from, to).replace(/\s+/g, ' ').trim() +
+                   (to < text.length ? '…' : '');
+        };
+
+        const closeResults = () => {
+            resultsBox.classList.remove('open');
+            resultsBox.textContent = '';
+            resultLinks = [];
+            activeIndex = -1;
+        };
+
+        const setActive = index => {
+            if (!resultLinks.length) return;
+            activeIndex = (index + resultLinks.length) % resultLinks.length;
+            resultLinks.forEach((link, i) => link.classList.toggle('active', i === activeIndex));
+            const active = resultLinks[activeIndex];
+            if (active) active.scrollIntoView({ block: 'nearest' });
+        };
+
+        const showMessage = message => {
+            closeResults();
+            const empty = document.createElement('div');
+            empty.className = 'search-empty';
+            empty.textContent = message;
+            resultsBox.appendChild(empty);
+            resultsBox.classList.add('open');
+        };
+
+        const render = query => {
+            const hits = search(query);
+            if (!hits.length) {
+                showMessage('نتیجه‌ای یافت نشد.');
+                return;
+            }
+
+            const re = buildPattern(query);
+            closeResults();
+
+            hits.forEach(hit => {
+                const link = document.createElement('a');
+                link.className = 'search-result';
+                link.href = baseUrl + hit.doc.location;
+
+                const title = document.createElement('div');
+                title.className = 'search-result-title';
+                title.appendChild(highlight(hit.title, re));
+                link.appendChild(title);
+
+                if (hit.text) {
+                    const snippet = document.createElement('div');
+                    snippet.className = 'search-result-snippet';
+                    snippet.appendChild(highlight(buildSnippet(hit.text, re), re));
+                    link.appendChild(snippet);
+                }
+
+                resultsBox.appendChild(link);
+                resultLinks.push(link);
+            });
+
+            resultsBox.classList.add('open');
+        };
+
+        const query = () => input.value.trim();
+
+        const run = () => {
+            const current = query();
+            if (current.length < 2) {
+                closeResults();
+                return;
+            }
+            loadIndex().then(() => {
+                if (query() === current) render(current);
+            });
+        };
+
+        let debounce;
+        input.addEventListener('input', () => {
+            clearTimeout(debounce);
+            debounce = setTimeout(run, 180);
+        });
+
+        input.addEventListener('focus', run);
+
+        input.addEventListener('keydown', event => {
+            if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                if (!resultLinks.length) return;
+                if (!resultsBox.classList.contains('open')) setActive(0);
+                else setActive(activeIndex + 1);
+            } else if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                setActive(activeIndex - 1);
+            } else if (event.key === 'Enter') {
+                if (resultLinks[activeIndex]) {
+                    event.preventDefault();
+                    window.location.href = resultLinks[activeIndex].href;
+                }
+            } else if (event.key === 'Escape') {
+                closeResults();
+                input.blur();
+            }
+        });
+
+        document.addEventListener('click', event => {
+            if (!searchBox.contains(event.target)) closeResults();
+        });
+
+        document.addEventListener('keydown', event => {
+            const openSearch = event.key === 'k' && (event.ctrlKey || event.metaKey);
+            const slashSearch = event.key === '/' && document.activeElement !== input
+                && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+
+            if (openSearch || slashSearch) {
+                event.preventDefault();
+                input.focus();
+                input.select();
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

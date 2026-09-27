@@ -6,11 +6,21 @@ theme:
   name: null
   custom_dir: theme
 
+plugins:
+  - search
+
 nav:
+  - نصب NetBSD در QEMU/KVM: index.md
   - معرفی سیستم‌عامل DragonflyBSD: dragonflybsd.md
-  - اولین رویداد (FreeBSD Day): index.md
+  - اولین رویداد (FreeBSD Day): freebsd-day.md
   - مرام‌نامه جامعه: rules.md
   - تحلیل لایسنس (BSD vs GPL): license.md
+
+markdown_extensions:
+  - toc
+  - tables
+  - fenced_code
+  - md_in_html
 
 extra_css:
   - css/main.css
