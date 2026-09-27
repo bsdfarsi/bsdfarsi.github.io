@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معرفی سیستم‌عامل DragonflyBSD | بی‌اس‌دی فارسی</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Vazirmatn', sans-serif; margin: 0; }
+        .layout-wrapper { display: flex; min-height: 100vh; }
+    </style>
+
+    
+    <link rel="stylesheet" href="../css/main.css">
+    
+</head>
+<script>
+    // Theme & Language initialization (at the top to prevent flicker)
+    (function() {
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
+        const currentLang = localStorage.getItem('lang') || 'fa';
+        document.documentElement.setAttribute('lang', currentLang);
+        document.documentElement.setAttribute('dir', currentLang === 'en' ? 'ltr' : 'rtl');
+    })();
+</script>
+<body>
+
+<header class="site-header" id="siteHeader">
+    <div class="header-inner">
+
+        <button class="hamburger-btn" id="menuBtn" aria-label="Toggle Menu" aria-controls="sidebar" aria-expanded="false">☰</button>
+
+        <a class="site-brand" href="../">
+            <span class="brand-mark" aria-hidden="true">BSD</span>
+            <span class="brand-text">
+                <span class="brand-name">
+                    <span class="lang-fa">بی‌اس‌دی فارسی</span>
+                    <span class="lang-en">BSD Farsi</span>
+                </span>
+                <span class="brand-tagline">BSD USER GROUP</span>
+            </span>
+        </a>
+
+        <div class="header-search" id="headerSearch"
+             data-index="../search/search_index.json"
+             data-base="../">
+            <span class="search-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path d="M16.5 16.5 21 21"></path>
+                </svg>
+            </span>
+            <input type="search" class="search-input" id="siteSearch" placeholder="جستجو در سایت…"
+                   aria-label="جستجو در سایت" autocomplete="off" spellcheck="false">
+            <div class="search-results" id="searchResults"></div>
+        </div>
+
+        <div class="header-actions">
+            <div class="lang-toggle" role="group" aria-label="انتخاب زبان / Language selection">
+                <button type="button" class="lang-btn active" data-lang="fa" id="langFa" aria-pressed="true" title="فارسی">فا</button>
+                <button type="button" class="lang-btn" data-lang="en" id="langEn" aria-pressed="false" title="English">EN</button>
+            </div>
+            <div class="theme-toggle">
+                <label class="switch" for="theme-switch" aria-label="تغییر پوسته تاریک و روشن">
+                    <input type="checkbox" id="theme-switch">
+                    <span class="slider">
+                        <svg class="icon icon-sun" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="icon icon-moon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </span>
+                </label>
+            </div>
+            <div class="header-separator" aria-hidden="true"></div>
+            <div class="header-socials">
+                <a class="header-link" href="https://t.me/bsdfarsi" target="_blank" rel="noopener" aria-label="کانال تلگرام بی‌اس‌دی فارسی">
+                    <svg class="social-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8-1.68 7.92c-.12.58-.47.72-.96.45l-2.6-1.92-1.25 1.21c-.14.14-.26.26-.53.26l.19-2.65 4.82-4.35c.21-.19-.05-.29-.32-.11l-5.96 3.75-2.57-.8c-.56-.17-.57-.56.12-.83l10.05-3.87c.47-.17.88.11.73.94z"/>
+                    </svg>
+                </a>
+                <a class="header-link" href="https://github.com/bsdfarsi" target="_blank" rel="noopener" aria-label="گیت‌هاب بی‌اس‌دی فارسی">
+                    <svg class="social-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</header>
+
+<div class="layout-wrapper">
+
+    <aside class="sidebar" id="sidebar">
+        <ul class="sidebar-menu">
+            
+            <li>
+                <a href=".." class="">
+                    <span class="lang-fa">نصب NetBSD در QEMU/KVM</span>
+                    <span class="lang-en">
+                        Deploying NetBSD on QEMU/KVM
+                    </span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="./" class="active">
+                    <span class="lang-fa">معرفی سیستم‌عامل DragonflyBSD</span>
+                    <span class="lang-en">
+                        Introduction to DragonFly BSD
+                        
+                    </span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="../freebsd-day/" class="">
+                    <span class="lang-fa">اولین رویداد (FreeBSD Day)</span>
+                    <span class="lang-en">
+                        First Online Event (FreeBSD Day)
+                        
+                    </span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="../rules/" class="">
+                    <span class="lang-fa">مرام‌نامه جامعه</span>
+                    <span class="lang-en">
+                        Community Code of Conduct
+                        
+                    </span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="../license/" class="">
+                    <span class="lang-fa">تحلیل لایسنس (BSD vs GPL)</span>
+                    <span class="lang-en">
+                        License Analysis (BSD vs GPL)
+                        
+                    </span>
+                </a>
+            </li>
+            
+        </ul>
+
+        <div class="sidebar-footer">
+            <a href="https://github.com/bsdfarsi" target="_blank" rel="noopener" aria-label="GitHub">
+                <svg class="social-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                <span class="lang-fa">گیت‌هاب</span>
+                <span class="lang-en">GitHub</span>
+            </a> | 
+            <a href="https://t.me/bsdfarsi" target="_blank" rel="noopener" aria-label="Telegram">
+                <svg class="social-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8-1.68 7.92c-.12.58-.47.72-.96.45l-2.6-1.92-1.25 1.21c-.14.14-.26.26-.53.26l.19-2.65 4.82-4.35c.21-.19-.05-.29-.32-.11l-5.96 3.75-2.57-.8c-.56-.17-.57-.56.12-.83l10.05-3.87c.47-.17.88.11.73.94z"/>
+                </svg>
+                <span class="lang-fa">تلگرام</span>
+                <span class="lang-en">Telegram</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <article class="doc-section">
+            <div class="lang-fa">
+<h1 id="_1">وقتی یک سنجاقک، چکش به دست می‌گیرد</h1>
+<p>احتمالا شما هم سیستم‌عامل DragonflyBSD را می‌شناسید، یا حداقل یک بار به گوشتان خورده است. </p>
+<p>شروع این پروژه در سال ۲۰۰۳ توسط متیو دیلون (که از توسعه‌دهندگان اصلی پروژه‌های آمیگا و فری‌بی‌اس‌دی بود)، اتفاق افتاد. او با Fork کردن نسخه ۴.۸ فری‌بی‌اس‌دی، درب جدیدی را به دنیای بی‌اس‌دی‌ها باز کرد. البته شاید اگر متیو با دیگر توسعه‌دهندگان، درباره نحوه پیاده‌سازی Threading و زیرسیستم SMP در سیستم‌عامل فری‌بی‌اس‌دی به اختلاف نمی‌خورد، هیچ‌وقت چنین پروژه‌ای خلق نمی‌شد. دیلون اعتقاد داشت مانیفستِ قفل‌گذاری کرنل در فری‌بی‌اس‌دی ۵ به سمت پیچیدگی بیش از حد رفته و کارایی را فدا می‌کند.</p>
+<p><img src="../images/dfly.png" alt="DragonflyBSD Installation" style="width: 100%; max-width: 800px;"></p>
+<p>در ادامه، سعی می‌کنیم عمیق‌ترین و جذاب‌ترین قابلیت‌های فنی این سیستم‌عامل خاص را با هم بررسی کنیم: <br><br></p>
+<blockquote>
+<h3 id="hammer2-clustering">فایل‌سیستم مدرن HAMMER2 و قابلیت های Clustering</h3>
+</blockquote>
+<p>مگر می‌شود از دراگون‌فلای صحبت کرد و حرفی از شاهکار متیو دیلون، یعنی سیستم‌فایل اختصاصی HAMMER به میان نیاورد؟ نسخه دوم این سیستم‌فایل (<strong>HAMMER2</strong>) اکنون فایل‌سیستم پیش‌فرض این سیستم‌عامل است و برای حل چالش‌های مدرن ذخیره‌سازی طراحی شده است.</p>
+<p>برخی از ویژگی‌های HAMMER2 عبارتند از:</p>
+<ul>
+<li><strong>طراحی بدون نیاز به fsck:</strong> ساختار این سیستم‌فایل به گونه‌ای است که حتی پس از کرش‌های سنگین یا قطع ناگهانی برق، سیستم‌فایل بلافاصله پس از بوت در دسترس است و نیازی به اسکن‌های طولانی‌مدت دیسک ندارد.</li>
+<li><strong>تاریخچه زنده (Fine-grained history):</strong> این قابلیت شبیه به یک ماشین زمان واقعی عمل می‌کند. شما می‌توانید به وضعیت فایل‌سیستم در بازه‌های زمانی مشخص در گذشته دسترسی داشته باشید، بدون اینکه افت کارایی ناشی از اسنپ‌شات‌های سنتی را تجربه کنید.</li>
+<li><strong>پشتیبانی از کپی در هنگام نوشتن (CoW) و فشرده‌سازی زنده:</strong> اطلاعات به صورت آنلاین فشرده‌سازی (Transparent Compression) می‌شوند و قابلیت حذف داده‌های تکراری (Deduplication) کارایی فضا را به حداکثر می‌رساند.</li>
+</ul>
+<p>یکی از جاه‌طلبانه‌ترین اهداف در طراحی HAMMER2، یکپارچه‌سازی قابلیت‌های شبکه و کلاسترینگ مستقیماً در لایه سیستم‌فایل است. این یعنی شما بدون نیاز به ابزارهای پیچیده جانبی (مثل Ceph یا GlusterFS)، می‌توانید یک دیسک توزیع‌شده و بسیار در دسترس (High Availability) داشته باشید:</p>
+<ul>
+<li><strong>معماری چند مستری (Multi-Master Replication):</strong> در HAMMER2 می‌توانید چندین کپی فعال و همزمان (Master Nodes) از یک Volume روی ماشین‌های مختلف شبکه داشته باشید. این گره‌ها به صورت آنلاین و دوطرفه تغییرات را همگام‌سازی (Sync) می‌کنند. اگر یکی از سرورها از مدار خارج شود، کلاستر بدون وقفه به کار خود ادامه می‌دهد.</li>
+<li><strong>آرشیو و توزیع داده با Slave Nodes:</strong> علاوه بر گره‌های Master، شما می‌توانید گره‌های Slave یا لایه Read-Only تعریف کنید. این معماری برای توزیع بار خواندن (Read Load-Balancing) روی سرورهای نزدیک‌تر و همچنین ایجاد آف‌سایت بک‌آپ‌های (Off-site Backups) آنی و بدون وقفه فوق‌العاده کاربردی است.</li>
+<li><strong>اتصالات شبکه بومی (Native Network Clustering):</strong> زیرسیستم کلاسترینگ HAMMER2 به طور مستقیم با پروتکل‌های شبکه اختصاصی دراگون‌فلای جفت می‌شود تا کپی برداری و همگام‌سازی بلاک‌ها در سطح شبکه کمترین میزان Latency و Overhead پردازشی را داشته باشد. این ویژگی به شما اجازه می‌دهد تا کلاسترهای بزرگ ذخیره‌سازی را با پایداری بسیار بالا مدیریت کنید.
+ <a href="https://www.dragonflybsd.org/hammer/">اطلاعات بیشتر</a>
+<br><blockquote>
+<h3 id="vkernel-virtual-kernel">قابلیت VKernel (Virtual Kernel)</h3>
+</blockquote>
+</li>
+</ul>
+<p>کرنل مجازی یا vkernel، پاشنه آشیانِ دراگون‌فلای برای توسعه‌دهندگان هسته است. این قابلیت امکان مجازی‌سازی کامل کرنل را در محیط Userland (فضای کاربری) فراهم می‌کند. بدین معنا که شما برای تست یک قابلیت، یک درایور جدید یا سیستم‌فایل، نیازی به شبیه‌سازهای سنگین یا Reboot کردن ماشین ندارید. </p>
+<p>کافیست کرنل سفارشی‌سازی شده را مانند یک پروسس معمولی (مانند دستور <code>./kernel</code>) در ترمینال خود لود کنید. این کرنل در یک محیط کاملاً ایزوله‌شده اجرا می‌شود، حافظه و دیسک مجازی خودش را مدیریت می‌کند و اگر به هر دلیلی کرش کند، سیستم اصلی شما (Host) هیچ آسیبی نمی‌بیند. <a href="https://www.dragonflybsd.org/docs/handbook/vkernel/">اطلاعات بیشتر</a></p>
+<p><br></p>
+<blockquote>
+<h3 id="swapcache">مکانیزم Swapcache</h3>
+</blockquote>
+<p>وقتی سیستم با کمبود حافظه رم (RAM) مواجه می‌شود، داده‌های موقت و غیرضروری را به دیسک منتقل می‌کند که به این فرآیند Swapping می‌گویند. در سیستم‌های سنتی، این کار سرعت را به شدت فدای ظرفیت می‌کند. </p>
+<p>مکانیزم <strong>Swapcache</strong> این امکان را فراهم می‌کند تا از یک حافظه پرسرعت (مانند یک درایو SSD یا NVMe) به عنوان لایه واسط (Cache) میان حافظه RAM و دیسک‌های مکانیکی کندتر (HDD) استفاده کنید. ساختار مدیریت حافظه دراگون‌فلای با این روش نه تنها عملیات Swap را تسریع می‌کند، بلکه می‌تواند File-data و Meta-dataهای پرمصرف را نیز روی این لایه موقت کش کند تا لود سیستم به شدت بهینه شود. <a href="https://leaf.dragonflybsd.org/cgi/web-man?command=swapcache&amp;section=ANY">اطلاعات بیشتر</a></p>
+<p><br></p>
+<blockquote>
+<h3 id="lwkt-lightweight-kernel-threads">معماری LWKT (Lightweight Kernel Threads)</h3>
+</blockquote>
+<p>بزرگترین تمایز کرنل دراگون‌فلای با بقیه سیستم‌عامل ها، در نحوه مدیریت پردازش موازی (SMP) است. برخلاف معماری سنتی یونیکس و دیگر بی‌اس‌دی‌ها که برای قفل‌گذاری روی منابع کرنل متکی به لایه پیچیده و سنگین Mutexها هستند، دراگون‌فلای از مدل «Thread های کرنل سبک‌وزن» یا همان <strong>LWKT</strong> استفاده می‌کند.</p>
+<p>در این سیستم، مفهوم پیام‌رسانی درون‌‌کرنلی (In-kernel message passing) جایگزین زیرسیستم‌های قفل‌گذاری رایج شده است. هر پردازنده Scheduler اختصاصی خودش را دارد؛ در نتیجه Thread های پردازشی به یک پردازنده خاص متصل (Bound) می‌شوند و به ندرت منتظر آزاد شدن منابع توسط پردازنده دیگر می‌مانند. این ایده که مستقیماً از زیرسیستم‌های سیستم‌عامل نوستالژیک AmigaOS الهام گرفته شده، باعث می‌شود دراگون‌فلای در پردازش‌های سنگین روی سرورهایی با تعداد هسته بالا، بازدهی فوق‌العاده پایدار و بدون Bottleneck از خود نشان دهد.</p>
+</div>
+<div class="lang-en">
+<h1 id="when-a-dragonfly-wields-a-hammer-an-introduction-to-dragonfly-bsd">When a Dragonfly Wields a Hammer: An Introduction to DragonFly BSD</h1>
+<p>You are likely already familiar with the DragonFly BSD operating system, or at least have heard its name.</p>
+<p>The project was founded in 2003 by Matthew Dillon, a prominent developer behind both AmigaOS and FreeBSD. By forking FreeBSD 4.8, he opened an entirely new frontier in the BSD world. Had Dillon not diverged with other FreeBSD core developers over how threading and the SMP (Symmetric Multiprocessing) subsystem should be implemented in FreeBSD 5, this unique OS might never have come into existence. Dillon argued that the fine-grained kernel locking architecture in FreeBSD 5 introduced excessive complexity at the expense of overall performance and predictability.</p>
+<p><img src="../images/dfly.png" alt="DragonflyBSD Installation" style="width: 100%; max-width: 800px;"></p>
+<p>Below, we explore the most fascinating and deeply engineered technical innovations that define this unique operating system: <br><br></p>
+<blockquote>
+<h3 id="hammer2-next-generation-filesystem-native-clustering">HAMMER2: Next-Generation Filesystem &amp; Native Clustering</h3>
+</blockquote>
+<p>No discussion of DragonFly BSD is complete without exploring Matthew Dillon's magnum opus: the HAMMER filesystem. Its second iteration, <strong>HAMMER2</strong>, is the default filesystem for DragonFly BSD, engineered from the ground up to solve modern high-density storage challenges.</p>
+<p>Key architectural features of HAMMER2 include:</p>
+<ul>
+<li><strong>Fsck-Free Design:</strong> The filesystem structures are organized such that even after catastrophic kernel crashes or sudden power loss, the filesystem is immediately mountable and consistent upon reboot without requiring lengthy disk recovery scans.</li>
+<li><strong>Fine-Grained Live History:</strong> Operating much like a real-time time machine, HAMMER2 allows access to point-in-time filesystem snapshots across granular past windows without the performance degradation typically associated with traditional snapshot implementations.</li>
+<li><strong>Copy-on-Write (CoW) &amp; Transparent Compression:</strong> Data blocks are written using copy-on-write semantics alongside online transparent compression and deduplication to maximize storage utilization and data integrity.</li>
+</ul>
+<p>One of the most ambitious design milestones in HAMMER2 is integrating network clustering primitives directly into the filesystem layer—providing distributed, highly available storage without relying on external orchestration layers like Ceph or GlusterFS:</p>
+<ul>
+<li><strong>Multi-Master Replication:</strong> HAMMER2 allows active, simultaneous master replicas of a volume across multiple networked nodes. These nodes synchronize changes bi-directionally online; if one server fails, the cluster continues serving traffic without interruption.</li>
+<li><strong>Data Distribution via Slave Nodes:</strong> In addition to master nodes, read-only slave targets can be defined. This architecture enables distributed read load-balancing across nearby nodes and seamless, non-disruptive off-site backups.</li>
+<li><strong>Native Network Clustering:</strong> HAMMER2 clustering interfaces directly with DragonFly's custom transport protocols, ensuring block synchronization over the network incurs minimal latency and processing overhead. <a href="https://www.dragonflybsd.org/hammer/">Learn more</a></li>
+</ul>
+<p><br></p>
+<blockquote>
+<h3 id="virtual-kernel-vkernel-architecture">Virtual Kernel (VKernel) Architecture</h3>
+</blockquote>
+<p>The Virtual Kernel, or <code>vkernel</code>, is DragonFly's playground for kernel and driver development. It allows a full DragonFly kernel to run virtualized in unprivileged userland space. This means developers can test new subsystems, device drivers, or experimental filesystems without needing heavy hypervisors or rebooting the host machine.</p>
+<p>A custom kernel binary can be launched in a terminal like any standard userland process (<code>./kernel</code>). It executes in a strictly isolated environment, managing its own virtual memory and disk images. If it panics or crashes, the host operating system remains completely unaffected. <a href="https://www.dragonflybsd.org/docs/handbook/vkernel/">Learn more</a></p>
+<p><br></p>
+<blockquote>
+<h3 id="swapcache-intelligent-tiered-caching">Swapcache: Intelligent Tiered Caching</h3>
+</blockquote>
+<p>When a system experiences memory pressure, it offloads inactive memory pages to disk in a process known as swapping. On conventional systems, swapping severely penalizes performance due to rotational disk latency.</p>
+<p>The <strong>Swapcache</strong> subsystem introduces an intelligent intermediary caching layer, utilizing fast solid-state storage (such as NVMe or SSD drives) between volatile RAM and mechanical storage arrays. DragonFly's virtual memory subsystem uses Swapcache not only to accelerate paging operations, but also to transparently cache frequently accessed file data and filesystem metadata, drastically optimizing sustained server throughput. <a href="https://leaf.dragonflybsd.org/cgi/web-man?command=swapcache&amp;section=ANY">Learn more</a></p>
+<p><br></p>
+<blockquote>
+<h3 id="lightweight-kernel-threads-lwkt">Lightweight Kernel Threads (LWKT)</h3>
+</blockquote>
+<p>The defining hallmark of the DragonFly BSD kernel lies in its approach to symmetric multiprocessing (SMP). Rather than relying on heavyweight, multi-layered mutex locks to protect shared kernel resources across CPUs, DragonFly utilizes <strong>Lightweight Kernel Threads (LWKT)</strong>.</p>
+<p>In this architecture, an in-kernel asynchronous message-passing paradigm replaces conventional lock contention. Each physical CPU core manages its own dedicated scheduler; processing threads are bound to a specific CPU and rarely block waiting for shared resources held by another processor. Directly inspired by the elegant concepts of AmigaOS, this model guarantees high, bottleneck-free scaling under heavy parallel workloads on multi-core server platforms.</p>
+</div>
+        </article>
+    </main>
+
+</div>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const menuLinks = document.querySelectorAll('.sidebar-menu a');
+
+    if (menuBtn && sidebar) {
+        const setSidebar = open => {
+            sidebar.classList.toggle('open', open);
+            menuBtn.textContent = open ? '✕' : '☰';
+            menuBtn.setAttribute('aria-expanded', String(open));
+        };
+
+        menuBtn.addEventListener('click', () => {
+            setSidebar(!sidebar.classList.contains('open'));
+        });
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => setSidebar(false));
+        });
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && sidebar.classList.contains('open')) {
+                setSidebar(false);
+                menuBtn.focus();
+            }
+        });
+    }
+
+    // Theme Toggle Logic
+    const themeSwitch = document.getElementById('theme-switch');
+    const htmlElement = document.documentElement;
+    
+    // Sync switch state with current theme
+    if (htmlElement.getAttribute('data-theme') === 'light') {
+        themeSwitch.checked = true;
+    }
+
+    themeSwitch.addEventListener('change', () => {
+        const theme = themeSwitch.checked ? 'light' : 'dark';
+        htmlElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+    });
+
+    // Language Toggle Logic (On-Demand Switcher)
+    const langFaBtn = document.getElementById('langFa');
+    const langEnBtn = document.getElementById('langEn');
+
+    function setLanguage(lang) {
+        htmlElement.setAttribute('lang', lang);
+        htmlElement.setAttribute('dir', lang === 'en' ? 'ltr' : 'rtl');
+        localStorage.setItem('lang', lang);
+
+        if (langFaBtn && langEnBtn) {
+            langFaBtn.classList.toggle('active', lang === 'fa');
+            langFaBtn.setAttribute('aria-pressed', String(lang === 'fa'));
+            langEnBtn.classList.toggle('active', lang === 'en');
+            langEnBtn.setAttribute('aria-pressed', String(lang === 'en'));
+        }
+
+        const siteSearch = document.getElementById('siteSearch');
+        if (siteSearch) {
+            siteSearch.placeholder = lang === 'en' ? 'Search documentation…' : 'جستجو در سایت…';
+            siteSearch.setAttribute('aria-label', lang === 'en' ? 'Search documentation' : 'جستجو در سایت');
+        }
+
+        const activeLink = document.querySelector('.sidebar-menu a.active');
+        if (activeLink) {
+            const titleEl = activeLink.querySelector(lang === 'en' ? '.lang-en' : '.lang-fa');
+            if (titleEl) {
+                const siteName = lang === 'en' ? 'BSD Farsi' : 'بی‌اس‌دی فارسی';
+                document.title = `${titleEl.textContent.trim()} | ${siteName}`;
+            }
+        }
+
+        // Dispatch on-demand event for any page hooks or listeners
+        window.dispatchEvent(new CustomEvent('languageChange', { detail: { lang } }));
+    }
+
+    if (langFaBtn && langEnBtn) {
+        const initialLang = localStorage.getItem('lang') || 'fa';
+        setLanguage(initialLang);
+
+        langFaBtn.addEventListener('click', () => setLanguage('fa'));
+        langEnBtn.addEventListener('click', () => setLanguage('en'));
+    }
+
+    // Header shadow once the page is scrolled
+    const siteHeader = document.getElementById('siteHeader');
+
+    if (siteHeader) {
+        const syncHeaderShadow = () => {
+            siteHeader.classList.toggle('scrolled', window.scrollY > 4);
+        };
+        window.addEventListener('scroll', syncHeaderShadow, { passive: true });
+        syncHeaderShadow();
+    }
+
+    // Search
+    const searchBox = document.getElementById('headerSearch');
+
+    if (searchBox) {
+        const input = searchBox.querySelector('.search-input');
+        const resultsBox = searchBox.querySelector('.search-results');
+        const indexUrl = searchBox.dataset.index;
+        const baseUrl = searchBox.dataset.base || '';
+
+        // Zero-width marks, harakat and spaces are ignored while typing
+        const IGNORABLE = '[\\s\\u200b-\\u200f\\u2060-\\u206f\\u064b-\\u0652\\ufeff]*';
+        // Every spelling variant of a letter maps to a class covering them all,
+        // so a query typed with Arabic letters still matches the Persian text.
+        const VARIANTS = {
+            'ی': '[یيى]', 'ي': '[یيى]', 'ى': '[یيى]',
+            'ک': '[کک]', 'ك': '[کک]',
+            'ا': '[اأإآٱ]', 'أ': '[اأإآٱ]', 'إ': '[اأإآٱ]',
+            'آ': '[اأإآٱ]', 'ٱ': '[اأإآٱ]',
+            'ه': '[هة]', 'ة': '[هة]',
+            'و': '[وؤ]', 'ؤ': '[وؤ]'
+        };
+
+        let docs = null;
+        let loading = null;
+        let activeIndex = -1;
+        let resultLinks = [];
+
+        const escapeChar = ch => ch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+        // Turn a query token into a tolerant pattern so that Arabic/Persian
+        // spelling variants and ZWNJ still match the indexed text.
+        const tokenPattern = token => Array.from(token)
+            .map(ch => (/\s/.test(ch) ? IGNORABLE : (VARIANTS[ch] || escapeChar(ch))))
+            .join('');
+
+        const buildPattern = query => {
+            const tokens = query.split(/\s+/).filter(Boolean).map(tokenPattern);
+            return tokens.length ? new RegExp(tokens.join('|'), 'gi') : null;
+        };
+
+        const countMatches = (text, re) => {
+            re.lastIndex = 0;
+            const matches = text.match(re);
+            return matches ? matches.length : 0;
+        };
+
+        const search = query => {
+            const re = buildPattern(query);
+            if (!re || !docs) return [];
+
+            const hits = [];
+            for (const doc of docs) {
+                const title = doc.title || '';
+                const text = doc.text || '';
+                const inTitle = countMatches(title, re);
+                const inText = countMatches(text, re);
+                if (!inTitle && !inText) continue;
+                hits.push({ doc, title, text, score: inTitle * 6 + inText });
+            }
+
+            hits.sort((a, b) => b.score - a.score);
+            return hits.slice(0, 12);
+        };
+
+        const loadIndex = () => {
+            if (!loading) {
+                loading = fetch(indexUrl)
+                    .then(response => {
+                        if (!response.ok) throw new Error(response.status);
+                        return response.json();
+                    })
+                    .then(data => { docs = (data && data.docs) || []; })
+                    .catch(() => { docs = []; });
+            }
+            return loading;
+        };
+
+        // Build highlighted text as DOM nodes (never inject raw HTML)
+        const highlight = (text, re) => {
+            const fragment = document.createDocumentFragment();
+            re.lastIndex = 0;
+            let last = 0;
+            let match;
+
+            while ((match = re.exec(text)) !== null) {
+                if (match.index > last) {
+                    fragment.appendChild(document.createTextNode(text.slice(last, match.index)));
+                }
+                const mark = document.createElement('mark');
+                mark.textContent = match[0];
+                fragment.appendChild(mark);
+                last = match.index + match[0].length;
+                if (!match[0].length) re.lastIndex++;
+            }
+
+            if (last < text.length) {
+                fragment.appendChild(document.createTextNode(text.slice(last)));
+            }
+            return fragment;
+        };
+
+        const buildSnippet = (text, re) => {
+            re.lastIndex = 0;
+            const match = re.exec(text);
+            const from = match ? Math.max(0, match.index - 50) : 0;
+            const to = match
+                ? Math.min(text.length, match.index + match[0].length + 90)
+                : Math.min(text.length, 160);
+
+            return (from > 0 ? '…' : '') +
+                   text.slice(from, to).replace(/\s+/g, ' ').trim() +
+                   (to < text.length ? '…' : '');
+        };
+
+        const closeResults = () => {
+            resultsBox.classList.remove('open');
+            resultsBox.textContent = '';
+            resultLinks = [];
+            activeIndex = -1;
+        };
+
+        const setActive = index => {
+            if (!resultLinks.length) return;
+            activeIndex = (index + resultLinks.length) % resultLinks.length;
+            resultLinks.forEach((link, i) => link.classList.toggle('active', i === activeIndex));
+            const active = resultLinks[activeIndex];
+            if (active) active.scrollIntoView({ block: 'nearest' });
+        };
+
+        const showMessage = message => {
+            closeResults();
+            const empty = document.createElement('div');
+            empty.className = 'search-empty';
+            empty.textContent = message;
+            resultsBox.appendChild(empty);
+            resultsBox.classList.add('open');
+        };
+
+        const render = query => {
+            const hits = search(query);
+            if (!hits.length) {
+                showMessage('نتیجه‌ای یافت نشد.');
+                return;
+            }
+
+            const re = buildPattern(query);
+            closeResults();
+
+            hits.forEach(hit => {
+                const link = document.createElement('a');
+                link.className = 'search-result';
+                link.href = baseUrl + hit.doc.location;
+
+                const title = document.createElement('div');
+                title.className = 'search-result-title';
+                title.appendChild(highlight(hit.title, re));
+                link.appendChild(title);
+
+                if (hit.text) {
+                    const snippet = document.createElement('div');
+                    snippet.className = 'search-result-snippet';
+                    snippet.appendChild(highlight(buildSnippet(hit.text, re), re));
+                    link.appendChild(snippet);
+                }
+
+                resultsBox.appendChild(link);
+                resultLinks.push(link);
+            });
+
+            resultsBox.classList.add('open');
+        };
+
+        const query = () => input.value.trim();
+
+        const run = () => {
+            const current = query();
+            if (current.length < 2) {
+                closeResults();
+                return;
+            }
+            loadIndex().then(() => {
+                if (query() === current) render(current);
+            });
+        };
+
+        let debounce;
+        input.addEventListener('input', () => {
+            clearTimeout(debounce);
+            debounce = setTimeout(run, 180);
+        });
+
+        input.addEventListener('focus', run);
+
+        input.addEventListener('keydown', event => {
+            if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                if (!resultLinks.length) return;
+                if (!resultsBox.classList.contains('open')) setActive(0);
+                else setActive(activeIndex + 1);
+            } else if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                setActive(activeIndex - 1);
+            } else if (event.key === 'Enter') {
+                if (resultLinks[activeIndex]) {
+                    event.preventDefault();
+                    window.location.href = resultLinks[activeIndex].href;
+                }
+            } else if (event.key === 'Escape') {
+                closeResults();
+                input.blur();
+            }
+        });
+
+        document.addEventListener('click', event => {
+            if (!searchBox.contains(event.target)) closeResults();
+        });
+
+        document.addEventListener('keydown', event => {
+            const openSearch = event.key === 'k' && (event.ctrlKey || event.metaKey);
+            const slashSearch = event.key === '/' && document.activeElement !== input
+                && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+
+            if (openSearch || slashSearch) {
+                event.preventDefault();
+                input.focus();
+                input.select();
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

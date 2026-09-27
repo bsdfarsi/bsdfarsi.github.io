@@ -16,5 +16,11 @@ nav:
   - مرام‌نامه جامعه: rules.md
   - تحلیل لایسنس (BSD vs GPL): license.md
 
+markdown_extensions:
+  - toc
+  - tables
+  - fenced_code
+  - md_in_html
+
 extra_css:
   - css/main.css

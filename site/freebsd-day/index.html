@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ config.site_name }}</title>
+    <title>اولین رویداد (FreeBSD Day) | بی‌اس‌دی فارسی</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,15 +14,19 @@
         .layout-wrapper { display: flex; min-height: 100vh; }
     </style>
 
-    {% for path in config.extra_css %}
-    <link rel="stylesheet" href="{{ path | url }}">
-    {% endfor %}
+    
+    <link rel="stylesheet" href="../css/main.css">
+    
 </head>
 <script>
-    // Theme initialization (at the top to prevent flicker)
+    // Theme & Language initialization (at the top to prevent flicker)
     (function() {
         const currentTheme = localStorage.getItem('theme') || 'dark';
         document.documentElement.setAttribute('data-theme', currentTheme);
+
+        const currentLang = localStorage.getItem('lang') || 'fa';
+        document.documentElement.setAttribute('lang', currentLang);
+        document.documentElement.setAttribute('dir', currentLang === 'en' ? 'ltr' : 'rtl');
     })();
 </script>
 <body>
@@ -32,11 +36,11 @@
 
         <button class="hamburger-btn" id="menuBtn" aria-label="Toggle Menu" aria-controls="sidebar" aria-expanded="false">☰</button>
 
-        <a class="site-brand" href="{{ base_url }}/">
+        <a class="site-brand" href="../">
             <span class="brand-mark" aria-hidden="true">BSD</span>
             <span class="brand-text">
                 <span class="brand-name">
-                    <span class="lang-fa">{{ config.site_name }}</span>
+                    <span class="lang-fa">بی‌اس‌دی فارسی</span>
                     <span class="lang-en">BSD Farsi</span>
                 </span>
                 <span class="brand-tagline">BSD USER GROUP</span>
@@ -44,8 +48,8 @@
         </a>
 
         <div class="header-search" id="headerSearch"
-             data-index="{{ base_url }}/search/search_index.json"
-             data-base="{{ base_url }}/">
+             data-index="../search/search_index.json"
+             data-base="../">
             <span class="search-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                     <circle cx="11" cy="11" r="7"></circle>
@@ -58,26 +62,43 @@
         </div>
 
         <div class="header-actions">
+            <div class="lang-toggle" role="group" aria-label="انتخاب زبان / Language selection">
+                <button type="button" class="lang-btn active" data-lang="fa" id="langFa" aria-pressed="true" title="فارسی">فا</button>
+                <button type="button" class="lang-btn" data-lang="en" id="langEn" aria-pressed="false" title="English">EN</button>
+            </div>
+            <div class="theme-toggle">
+                <label class="switch" for="theme-switch" aria-label="تغییر پوسته تاریک و روشن">
+                    <input type="checkbox" id="theme-switch">
+                    <span class="slider">
+                        <svg class="icon icon-sun" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="icon icon-moon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </span>
+                </label>
+            </div>
+            <div class="header-separator" aria-hidden="true"></div>
             <div class="header-socials">
-                <a class="header-link" href="https://github.com/bsdfarsi" target="_blank" rel="noopener">
+                <a class="header-link" href="https://t.me/bsdfarsi" target="_blank" rel="noopener" aria-label="کانال تلگرام بی‌اس‌دی فارسی">
+                    <svg class="social-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8-1.68 7.92c-.12.58-.47.72-.96.45l-2.6-1.92-1.25 1.21c-.14.14-.26.26-.53.26l.19-2.65 4.82-4.35c.21-.19-.05-.29-.32-.11l-5.96 3.75-2.57-.8c-.56-.17-.57-.56.12-.83l10.05-3.87c.47-.17.88.11.73.94z"/>
+                    </svg>
+                </a>
+                <a class="header-link" href="https://github.com/bsdfarsi" target="_blank" rel="noopener" aria-label="گیت‌هاب بی‌اس‌دی فارسی">
                     <svg class="social-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                     </svg>
                 </a>
-                <a class="header-link" href="https://t.me/bsdfarsi" target="_blank" rel="noopener">
-                    <svg class="social-icon" width="20" height="20" viewBox="0 0 240 240" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12c0 4.84 3.44 9.87 8 13.86V22c0 1.1.9 2 2 2h1c1.1 0 2-.9 2-2v-1.66c3.5 1.95 7.5 3.16 12 3.16 5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-12c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/>
-                    </svg>
-                </a>
-            </div>
-            <div class="theme-toggle">
-                <label class="switch">
-                    <input type="checkbox" id="theme-switch">
-                    <span class="slider">
-                        <span class="icon icon-sun">☀️</span>
-                        <span class="icon icon-moon">🌙</span>
-                    </span>
-                </label>
             </div>
         </div>
 
@@ -88,43 +109,69 @@
 
     <aside class="sidebar" id="sidebar">
         <ul class="sidebar-menu">
-            {% for item in nav %}
+            
             <li>
-                <a href="{{ item.url | url }}" class="{% if item.active %}active{% endif %}">
-                    <span class="lang-fa">{{ item.title }}</span>
+                <a href=".." class="">
+                    <span class="lang-fa">نصب NetBSD در QEMU/KVM</span>
                     <span class="lang-en">
-                        {% if 'dragonflybsd' in item.url %}Introduction to DragonFly BSD
-                        {% elif 'freebsd-day' in item.url %}First Online Event (FreeBSD Day)
-                        {% elif 'rules' in item.url %}Community Code of Conduct
-                        {% elif 'license' in item.url %}License Analysis (BSD vs GPL)
-                        {% else %}Deploying NetBSD on QEMU/KVM{% endif %}
+                        Deploying NetBSD on QEMU/KVM
                     </span>
                 </a>
             </li>
-            {% endfor %}
+            
+            <li>
+                <a href="../dragonflybsd/" class="">
+                    <span class="lang-fa">معرفی سیستم‌عامل DragonflyBSD</span>
+                    <span class="lang-en">
+                        Introduction to DragonFly BSD
+                        
+                    </span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="./" class="active">
+                    <span class="lang-fa">اولین رویداد (FreeBSD Day)</span>
+                    <span class="lang-en">
+                        First Online Event (FreeBSD Day)
+                        
+                    </span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="../rules/" class="">
+                    <span class="lang-fa">مرام‌نامه جامعه</span>
+                    <span class="lang-en">
+                        Community Code of Conduct
+                        
+                    </span>
+                </a>
+            </li>
+            
+            <li>
+                <a href="../license/" class="">
+                    <span class="lang-fa">تحلیل لایسنس (BSD vs GPL)</span>
+                    <span class="lang-en">
+                        License Analysis (BSD vs GPL)
+                        
+                    </span>
+                </a>
+            </li>
+            
         </ul>
 
         <div class="sidebar-footer">
-<<<<<<< Updated upstream
-            <a href="https://github.com/bsdfarsi" target="_blank" rel="noopener">
-=======
             <a href="https://github.com/bsdfarsi" target="_blank" rel="noopener" aria-label="GitHub">
->>>>>>> Stashed changes
                 <svg class="social-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                 </svg>
                 <span class="lang-fa">گیت‌هاب</span>
                 <span class="lang-en">GitHub</span>
             </a> | 
-<<<<<<< Updated upstream
-            <a href="https://t.me/bsdfarsi" target="_blank" rel="noopener">
-                <svg class="social-icon" width="20" height="20" viewBox="0 0 240 240" fill="currentColor">
-                    <path d="M12 2C6.48 2 2 6.48 2 12c0 4.84 3.44 9.87 8 13.86V22c0 1.1.9 2 2 2h1c1.1 0 2-.9 2-2v-1.66c3.5 1.95 7.5 3.16 12 3.16 5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-12c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/>
-=======
             <a href="https://t.me/bsdfarsi" target="_blank" rel="noopener" aria-label="Telegram">
                 <svg class="social-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8-1.68 7.92c-.12.58-.47.72-.96.45l-2.6-1.92-1.25 1.21c-.14.14-.26.26-.53.26l.19-2.65 4.82-4.35c.21-.19-.05-.29-.32-.11l-5.96 3.75-2.57-.8c-.56-.17-.57-.56.12-.83l10.05-3.87c.47-.17.88.11.73.94z"/>
->>>>>>> Stashed changes
                 </svg>
                 <span class="lang-fa">تلگرام</span>
                 <span class="lang-en">Telegram</span>
@@ -134,7 +181,42 @@
 
     <main class="main-content">
         <article class="doc-section">
-            {{ page.content }}
+            <div class="lang-fa">
+<h1 id="_1">اولین رویداد آنلاین جامعه بی‌اس‌دی فارسی 🎉</h1>
+<p>به مناسبت <strong>روز جهانی فری‌بی‌اس‌دی (FreeBSD Day)</strong>، بسیار مفتخریم که برگزاری اولین رویداد آنلاین جامعه <strong>بی‌اس‌دی فارسی</strong> را اعلام کنیم</p>
+<blockquote>
+<h3 id="_2">مشخصات و زمان برگزاری نشست:</h3>
+<ul>
+<li><strong>زمان رویداد:</strong> جمعه ۵ خرداد، ساعت <strong>۲۰:۰۰</strong> به وقت تهران</li>
+<li><strong>بستر آنلاین:</strong> اتاق اختصاصی در پلتفرم <strong>گوگل میت (Google Meet)</strong></li>
+</ul>
+</blockquote>
+<p>در این رویداد صمیمانه، قصد داریم متخصصین، توسعه‌دهندگان و علاقه‌مندان به پشته‌های مهندسی سیستم را دور هم جمع کنیم. برنامه‌های اصلی این دورهمی به شرح زیر خواهد بود: </p>
+<ul>
+<li><strong>گفتگو و گپ‌وگفت آزاد:</strong> اشتراک‌گذاری تجربه‌های عملی در استفاده از سیستم‌عامل FreeBSD در محیط‌های پروداکشن و خانگی</li>
+</ul>
+<blockquote>
+<p>رویداد به پایان رسید.</p>
+</blockquote>
+</div>
+<div class="lang-en">
+<h1 id="first-online-meetup-of-bsd-farsi-community">First Online Meetup of BSD Farsi Community 🎉</h1>
+<p>In celebration of international <strong>FreeBSD Day</strong>, we are proud to announce the very first online community gathering of <strong>BSD Farsi</strong>.</p>
+<blockquote>
+<h3 id="event-schedule-platform">Event Schedule &amp; Platform:</h3>
+<ul>
+<li><strong>Date &amp; Time:</strong> Friday, May 26, at <strong>20:00</strong> Tehran Time (IRST)</li>
+<li><strong>Platform:</strong> Dedicated room on <strong>Google Meet</strong></li>
+</ul>
+</blockquote>
+<p>In this informal technical gathering, we bring together systems engineers, kernel developers, and open-source enthusiasts. The main highlights include:</p>
+<ul>
+<li><strong>Open Community Discussion:</strong> Sharing real-world production setups and homelab experiences using the FreeBSD operating system.</li>
+</ul>
+<blockquote>
+<p>The event has concluded.</p>
+</blockquote>
+</div>
         </article>
     </main>
 
@@ -183,8 +265,6 @@
         localStorage.setItem('theme', theme);
     });
 
-<<<<<<< Updated upstream
-=======
     // Language Toggle Logic (On-Demand Switcher)
     const langFaBtn = document.getElementById('langFa');
     const langEnBtn = document.getElementById('langEn');
@@ -228,7 +308,6 @@
         langEnBtn.addEventListener('click', () => setLanguage('en'));
     }
 
->>>>>>> Stashed changes
     // Header shadow once the page is scrolled
     const siteHeader = document.getElementById('siteHeader');
 
