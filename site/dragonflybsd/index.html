@@ -19,14 +19,10 @@
     
 </head>
 <script>
-    // Theme & Language initialization (at the top to prevent flicker)
+    // Theme initialization (at the top to prevent flicker)
     (function() {
         const currentTheme = localStorage.getItem('theme') || 'dark';
         document.documentElement.setAttribute('data-theme', currentTheme);
-
-        const currentLang = localStorage.getItem('lang') || 'fa';
-        document.documentElement.setAttribute('lang', currentLang);
-        document.documentElement.setAttribute('dir', currentLang === 'en' ? 'ltr' : 'rtl');
     })();
 </script>
 <body>
@@ -354,7 +350,6 @@
         langFaBtn.addEventListener('click', () => setLanguage('fa'));
         langEnBtn.addEventListener('click', () => setLanguage('en'));
     }
-
     // Header shadow once the page is scrolled
     const siteHeader = document.getElementById('siteHeader');
 
