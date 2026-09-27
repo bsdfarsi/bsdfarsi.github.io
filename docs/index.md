@@ -6,7 +6,7 @@
 
 در این مستند فنی، مراحل راه‌اندازی NetBSD 10.x روی QEMU/KVM را از ایجاد دیسک و تعریف سوییچ‌های عملکردی تا مراحل نصب و تنظیمات پایه بررسی می‌کنیم.
 
-<img src="images/dfly.png" alt="NetBSD QEMU Installation" style="width: 100%; max-width: 800px;">
+<img src="images/netbsd.png" alt="NetBSD QEMU Installation" style="width: 100%; max-width: 800px;">
 
 > ### ۱. آماده‌سازی ایمیج دیسک با فرمت qcow2
 
