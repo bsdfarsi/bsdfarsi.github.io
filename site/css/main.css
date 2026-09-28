@@ -75,6 +75,7 @@ body {
     align-items: center;
     gap: 18px;
     width: 100%;
+    position: relative;
 }
 
 .site-brand {
@@ -179,12 +180,13 @@ body {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 24px;
-    height: 24px;
+    height: 32px;
     padding: 2px;
     box-sizing: border-box;
-    gap: 2px;
+    gap: 3px;
     flex-shrink: 0;
     transition: background-color 0.3s ease, border-color 0.3s ease;
+    touch-action: manipulation;
 }
 
 .lang-toggle:hover {
@@ -196,19 +198,20 @@ body {
     background: transparent;
     color: var(--text-color);
     font-family: inherit;
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     font-weight: 700;
     line-height: 1;
-    height: 18px;
-    min-width: 22px;
-    padding: 0 5px;
-    border-radius: 12px;
+    height: 26px;
+    min-width: 28px;
+    padding: 0 8px;
+    border-radius: 14px;
     cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     user-select: none;
+    touch-action: manipulation;
 }
 
 .lang-btn:hover:not(.active) {
@@ -261,10 +264,11 @@ html[lang="en"] .doc-section p {
     position: relative;
     display: inline-flex;
     align-items: center;
-    width: 48px;
-    height: 24px;
+    width: 52px;
+    height: 30px;
     cursor: pointer;
     user-select: none;
+    touch-action: manipulation;
 }
 
 .theme-toggle input {
@@ -287,7 +291,7 @@ html[lang="en"] .doc-section p {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 5px;
+    padding: 0 6px;
     direction: ltr; /* Keeps coordinates predictable regardless of page direction */
 }
 
@@ -303,8 +307,8 @@ html[lang="en"] .doc-section p {
 .theme-toggle .slider:before {
     position: absolute;
     content: "";
-    height: 16px;
-    width: 16px;
+    height: 22px;
+    width: 22px;
     left: 3px;
     bottom: 3px;
     background-color: #ffffff;
@@ -320,7 +324,7 @@ html[lang="en"] .doc-section p {
 }
 
 .theme-toggle input:checked + .slider:before {
-    transform: translateX(24px);
+    transform: translateX(22px);
     background-color: var(--primary-color);
     box-shadow: 0 1px 3px rgba(204, 34, 41, 0.35);
 }
@@ -351,6 +355,39 @@ html[lang="en"] .doc-section p {
     margin: 0 4px;
 }
 
+.search-mobile-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    touch-action: manipulation;
+}
+
+.search-mobile-toggle:hover,
+.search-mobile-toggle:focus-visible {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--primary-hover);
+}
+
+[data-theme="light"] .search-mobile-toggle:hover,
+[data-theme="light"] .search-mobile-toggle:focus-visible {
+    background-color: rgba(0, 0, 0, 0.06);
+}
+
+.search-bar-inner {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
 .search-icon {
     position: absolute;
     inset-inline-start: 14px;
@@ -361,6 +398,10 @@ html[lang="en"] .doc-section p {
     pointer-events: none;
     display: flex;
     transition: opacity 0.2s ease;
+}
+
+.search-mobile-close {
+    display: none;
 }
 
 .search-input {
@@ -642,14 +683,63 @@ html[lang="en"] .doc-section p {
 
 .hamburger-btn {
     display: none;
-    background: none;
+    background: transparent;
     border: none;
-    font-size: 1.5rem;
-    line-height: 1;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
+    border-radius: 8px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
     color: var(--text-strong);
-    padding: 6px 10px;
+    transition: background-color 0.2s ease;
     flex-shrink: 0;
+    touch-action: manipulation;
+}
+
+.hamburger-btn:hover,
+.hamburger-btn:focus-visible {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] .hamburger-btn:hover,
+[data-theme="light"] .hamburger-btn:focus-visible {
+    background-color: rgba(0, 0, 0, 0.06);
+}
+
+.hamburger-icon {
+    width: 20px;
+    height: 14px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.hamburger-icon .bar {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: currentColor;
+    border-radius: 2px;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+.hamburger-btn[aria-expanded="true"] .bar:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+}
+
+.hamburger-btn[aria-expanded="true"] .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-btn[aria-expanded="true"] .bar:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+}
+
+.sidebar-backdrop {
+    display: none;
 }
 
 @media (max-width: 900px) {
@@ -658,7 +748,7 @@ html[lang="en"] .doc-section p {
     }
 
     .hamburger-btn {
-        display: block;
+        display: inline-flex;
     }
 
     .sidebar {
@@ -692,25 +782,70 @@ html[lang="en"] .doc-section p {
         transform: translateX(0);
     }
 
+    .sidebar-menu li {
+        margin-bottom: 6px;
+    }
+
+    .sidebar-menu a {
+        min-height: 46px;
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
+        font-size: 0.98rem;
+        border-radius: 8px;
+        touch-action: manipulation;
+    }
+
     .sidebar-footer {
-        display: block;
+        display: flex;
+        gap: 10px;
+        margin-top: auto;
+        padding-top: 20px;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .sidebar-social-btn {
+        flex: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 44px;
+        padding: 8px 12px;
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-color);
+        font-size: 0.88rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        touch-action: manipulation;
+    }
+
+    .sidebar-social-btn:hover,
+    .sidebar-social-btn:active {
+        background-color: rgba(204, 34, 41, 0.1);
+        border-color: var(--primary-hover);
+        color: var(--primary-hover);
     }
 
     .main-content {
-        padding: 20px 20px 40px 20px;
+        padding: 24px 20px 48px 20px;
     }
     
     .doc-section {
-        padding: 30px 20px;
+        padding: 30px 22px;
     }
 }
 
 @media (max-width: 768px) {
     .header-inner {
-        gap: 12px;
+        gap: 10px;
+        padding: 0 12px;
     }
 
-    /* Socials and separator live in the drawer footer at this width */
+    /* Socials and separator live in the drawer footer on mobile */
     .header-socials,
     .header-separator {
         display: none;
@@ -719,16 +854,127 @@ html[lang="en"] .doc-section p {
     .brand-tagline {
         display: none;
     }
+
+    /* Mobile Search Activation */
+    .header-actions {
+        margin-inline-start: 0;
+    }
+
+    .header-search {
+        flex: 0 0 auto;
+        max-width: none;
+        margin: 0;
+        margin-inline-start: auto;
+    }
+
+    .search-mobile-toggle {
+        display: inline-flex;
+    }
+
+    .search-bar-inner {
+        display: none;
+    }
+
+    .header-search.mobile-open {
+        position: static;
+    }
+
+    .header-search.mobile-open .search-bar-inner {
+        display: flex;
+        position: absolute;
+        inset: 0;
+        z-index: 1005;
+        background-color: var(--header-bg);
+        backdrop-filter: blur(16px);
+        padding: 0 10px;
+        gap: 8px;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+        animation: fadeIn 0.15s ease-out;
+    }
+
+    .header-search.mobile-open .search-input {
+        height: 42px;
+        font-size: 0.95rem;
+        flex: 1;
+        padding-inline-start: 40px;
+        padding-inline-end: 12px;
+    }
+
+    .header-search.mobile-open .search-mobile-close {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border: none;
+        background: transparent;
+        color: var(--text-color);
+        border-radius: 8px;
+        cursor: pointer;
+        flex-shrink: 0;
+        touch-action: manipulation;
+    }
+
+    .header-search.mobile-open .search-mobile-close:hover,
+    .header-search.mobile-open .search-mobile-close:focus-visible {
+        background-color: rgba(255, 255, 255, 0.08);
+        color: var(--text-strong);
+    }
+
+    [data-theme="light"] .header-search.mobile-open .search-mobile-close:hover {
+        background-color: rgba(0, 0, 0, 0.06);
+    }
+
+    .header-search.mobile-open .search-results {
+        position: fixed;
+        top: var(--header-height);
+        inset-inline: 0;
+        bottom: 0;
+        max-height: none;
+        width: 100%;
+        border-radius: 0;
+        border: none;
+        border-top: 1px solid var(--border-color);
+        background-color: var(--bg-color);
+        z-index: 1004;
+        padding: 14px 14px 40px 14px;
+        box-shadow: none;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .search-result {
+        padding: 14px 14px;
+        margin-bottom: 8px;
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+    }
+
+    .search-result-title {
+        font-size: 1rem;
+    }
 }
 
 @media (max-width: 560px) {
+    .site-header {
+        height: 58px;
+    }
+
+    :root {
+        --header-height: 58px;
+    }
+
     .header-inner {
-        padding: 0 8px;
+        padding: 0 10px;
         gap: 6px;
     }
 
-    .header-actions {
-        gap: 6px;
+    .hamburger-btn {
+        width: 38px;
+        height: 38px;
     }
 
     .brand-mark {
@@ -738,34 +984,115 @@ html[lang="en"] .doc-section p {
     }
 
     .brand-name {
-        font-size: 0.9rem;
+        font-size: 0.88rem;
     }
 
-    .header-search {
-        margin: 0;
+    .header-actions {
+        gap: 6px;
     }
 
-    .search-input {
-        height: 32px;
-        font-size: 0.8rem;
-        padding-inline-start: 32px;
-        padding-inline-end: 8px;
+    .lang-toggle {
+        height: 30px;
+        padding: 2px;
     }
 
-    .search-icon {
-        inset-inline-start: 10px;
+    .lang-btn {
+        height: 24px;
+        min-width: 26px;
+        padding: 0 6px;
+        font-size: 0.72rem;
     }
 
-    .search-icon svg {
-        width: 14px;
-        height: 14px;
+    .theme-toggle .switch {
+        width: 48px;
+        height: 28px;
+    }
+
+    .theme-toggle .slider:before {
+        height: 20px;
+        width: 20px;
+    }
+
+    .theme-toggle input:checked + .slider:before {
+        transform: translateX(20px);
+    }
+
+    .search-mobile-toggle {
+        width: 34px;
+        height: 34px;
     }
 
     .main-content {
-        padding: 16px 12px 32px 12px;
+        padding: 16px 12px 36px 12px;
     }
 
     .doc-section {
-        padding: 24px 16px;
+        padding: 22px 14px;
+        border-radius: 10px;
+    }
+
+    .doc-section h1 {
+        font-size: 1.55rem;
+        line-height: 1.35;
+        margin-bottom: 20px;
+    }
+
+    .doc-section h2 {
+        font-size: 1.25rem;
+        margin-top: 28px;
+    }
+
+    .doc-section h3 {
+        font-size: 1.1rem;
+    }
+
+    .doc-section p,
+    .doc-section li {
+        font-size: 0.96rem;
+        line-height: 1.75;
+    }
+
+    .doc-section pre {
+        padding: 12px 10px;
+        font-size: 0.82rem;
+        border-radius: 6px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .doc-section table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .doc-section blockquote {
+        padding: 2px 16px;
+        margin: 18px 0;
+    }
+
+    .doc-section img {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+@media (max-width: 375px) {
+    .header-inner {
+        padding: 0 6px;
+        gap: 4px;
+    }
+
+    .header-actions {
+        gap: 4px;
+    }
+
+    .brand-name {
+        font-size: 0.82rem;
+    }
+
+    .brand-mark {
+        width: 28px;
+        height: 28px;
     }
 }
