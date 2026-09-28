@@ -30,7 +30,13 @@
 <header class="site-header" id="siteHeader">
     <div class="header-inner">
 
-        <button class="hamburger-btn" id="menuBtn" aria-label="Toggle Menu" aria-controls="sidebar" aria-expanded="false">☰</button>
+        <button class="hamburger-btn" id="menuBtn" aria-label="Toggle Menu" aria-controls="sidebar" aria-expanded="false">
+            <span class="hamburger-icon" aria-hidden="true">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </span>
+        </button>
 
         <a class="site-brand" href="../">
             <span class="brand-mark" aria-hidden="true">BSD</span>
@@ -46,14 +52,28 @@
         <div class="header-search" id="headerSearch"
              data-index="../search/search_index.json"
              data-base="../">
-            <span class="search-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <button type="button" class="search-mobile-toggle" id="searchMobileToggle" aria-label="جستجو در سایت / Search documentation" title="جستجو">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
                     <circle cx="11" cy="11" r="7"></circle>
                     <path d="M16.5 16.5 21 21"></path>
                 </svg>
-            </span>
-            <input type="search" class="search-input" id="siteSearch" placeholder="جستجو در سایت…"
-                   aria-label="جستجو در سایت" autocomplete="off" spellcheck="false">
+            </button>
+            <div class="search-bar-inner">
+                <span class="search-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <circle cx="11" cy="11" r="7"></circle>
+                        <path d="M16.5 16.5 21 21"></path>
+                    </svg>
+                </span>
+                <input type="search" class="search-input" id="siteSearch" placeholder="جستجو در سایت…"
+                       aria-label="جستجو در سایت" autocomplete="off" spellcheck="false">
+                <button type="button" class="search-mobile-close" id="searchMobileClose" aria-label="بستن جستجو / Close search">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
             <div class="search-results" id="searchResults"></div>
         </div>
 
@@ -158,14 +178,14 @@
         </ul>
 
         <div class="sidebar-footer">
-            <a href="https://github.com/bsdfarsi" target="_blank" rel="noopener" aria-label="GitHub">
+            <a href="https://github.com/bsdfarsi" target="_blank" rel="noopener" class="sidebar-social-btn" aria-label="GitHub">
                 <svg class="social-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                 </svg>
                 <span class="lang-fa">گیت‌هاب</span>
                 <span class="lang-en">GitHub</span>
-            </a> | 
-            <a href="https://t.me/bsdfarsi" target="_blank" rel="noopener" aria-label="Telegram">
+            </a>
+            <a href="https://t.me/bsdfarsi" target="_blank" rel="noopener" class="sidebar-social-btn" aria-label="Telegram">
                 <svg class="social-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8-1.68 7.92c-.12.58-.47.72-.96.45l-2.6-1.92-1.25 1.21c-.14.14-.26.26-.53.26l.19-2.65 4.82-4.35c.21-.19-.05-.29-.32-.11l-5.96 3.75-2.57-.8c-.56-.17-.57-.56.12-.83l10.05-3.87c.47-.17.88.11.73.94z"/>
                 </svg>
@@ -174,6 +194,8 @@
             </a>
         </div>
     </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
 
     <main class="main-content">
         <article class="doc-section">
@@ -221,18 +243,26 @@
 <script>
     const menuBtn = document.getElementById('menuBtn');
     const sidebar = document.getElementById('sidebar');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
     const menuLinks = document.querySelectorAll('.sidebar-menu a');
 
     if (menuBtn && sidebar) {
         const setSidebar = open => {
             sidebar.classList.toggle('open', open);
-            menuBtn.textContent = open ? '✕' : '☰';
             menuBtn.setAttribute('aria-expanded', String(open));
+            if (sidebarBackdrop) {
+                sidebarBackdrop.classList.toggle('active', open);
+            }
+            document.body.classList.toggle('sidebar-locked', open);
         };
 
         menuBtn.addEventListener('click', () => {
             setSidebar(!sidebar.classList.contains('open'));
         });
+
+        if (sidebarBackdrop) {
+            sidebarBackdrop.addEventListener('click', () => setSidebar(false));
+        }
 
         menuLinks.forEach(link => {
             link.addEventListener('click', () => setSidebar(false));
@@ -320,8 +350,34 @@
     if (searchBox) {
         const input = searchBox.querySelector('.search-input');
         const resultsBox = searchBox.querySelector('.search-results');
+        const mobileToggleBtn = document.getElementById('searchMobileToggle');
+        const mobileCloseBtn = document.getElementById('searchMobileClose');
         const indexUrl = searchBox.dataset.index;
         const baseUrl = searchBox.dataset.base || '';
+
+        const openMobileSearch = () => {
+            searchBox.classList.add('mobile-open');
+            document.body.classList.add('search-open');
+            setTimeout(() => input.focus(), 60);
+            if (input.value.trim().length >= 2) {
+                run();
+            }
+        };
+
+        const closeMobileSearch = () => {
+            searchBox.classList.remove('mobile-open');
+            document.body.classList.remove('search-open');
+            closeResults();
+            input.blur();
+        };
+
+        if (mobileToggleBtn) {
+            mobileToggleBtn.addEventListener('click', openMobileSearch);
+        }
+
+        if (mobileCloseBtn) {
+            mobileCloseBtn.addEventListener('click', closeMobileSearch);
+        }
 
         // Zero-width marks, harakat and spaces are ignored while typing
         const IGNORABLE = '[\\s\\u200b-\\u200f\\u2060-\\u206f\\u064b-\\u0652\\ufeff]*';
@@ -479,6 +535,8 @@
                     link.appendChild(snippet);
                 }
 
+                link.addEventListener('click', closeMobileSearch);
+
                 resultsBox.appendChild(link);
                 resultLinks.push(link);
             });
@@ -520,15 +578,25 @@
                 if (resultLinks[activeIndex]) {
                     event.preventDefault();
                     window.location.href = resultLinks[activeIndex].href;
+                    closeMobileSearch();
                 }
             } else if (event.key === 'Escape') {
                 closeResults();
-                input.blur();
+                if (searchBox.classList.contains('mobile-open')) {
+                    closeMobileSearch();
+                } else {
+                    input.blur();
+                }
             }
         });
 
         document.addEventListener('click', event => {
-            if (!searchBox.contains(event.target)) closeResults();
+            if (!searchBox.contains(event.target)) {
+                closeResults();
+                if (searchBox.classList.contains('mobile-open')) {
+                    closeMobileSearch();
+                }
+            }
         });
 
         document.addEventListener('keydown', event => {
@@ -538,8 +606,12 @@
 
             if (openSearch || slashSearch) {
                 event.preventDefault();
-                input.focus();
-                input.select();
+                if (window.innerWidth <= 768) {
+                    openMobileSearch();
+                } else {
+                    input.focus();
+                    input.select();
+                }
             }
         });
     }
